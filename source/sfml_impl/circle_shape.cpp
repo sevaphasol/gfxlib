@@ -12,7 +12,7 @@ class CircleShape {
   public:
     sf::CircleShape circle_shape;
 
-    CircleShape( float radius ) : circle_shape( radius ) {}
+    explicit CircleShape( float radius ) : circle_shape( radius ) {}
 
     CircleShape() = default;
 };

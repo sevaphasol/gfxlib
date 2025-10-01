@@ -4,6 +4,7 @@
 #include "color.hpp"
 #include "event.hpp"
 #include "mouse.hpp"
+#include "rectangle_shape.hpp"
 #include "vector2.hpp"
 #include "drawable.hpp"
 
@@ -20,6 +21,7 @@ class Window;
 class Window {
     friend Mouse;
     friend CircleShape;
+    friend RectangleShape;
 
   public:
     Window( unsigned int width, unsigned int height, const char* title );

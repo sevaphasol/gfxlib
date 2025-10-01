@@ -10,17 +10,17 @@ namespace gfx_core {
 
 namespace impl {
 
-class CircleShape;
+class RectangleShape;
 
 }
 
-class CircleShape : public gfx_core::Drawable {
+class RectangleShape : public gfx_core::Drawable {
   public:
-    explicit CircleShape( float radius = 0.0f );
-    ~CircleShape();
+    RectangleShape( const Vector2f& size = Vector2f( 0, 0 ) );
+    ~RectangleShape();
 
     void
-    setRadius( float radius );
+    setSize( const Vector2f& size );
 
     void
     setFillColor( const gfx_core::Color& color );
@@ -36,10 +36,10 @@ class CircleShape : public gfx_core::Drawable {
 
   private:
     void*
-    getCircleShapeImpl() const;
+    getRectangleShapeImpl() const;
 
   private:
-    std::unique_ptr<impl::CircleShape> impl_;
+    std::unique_ptr<impl::RectangleShape> impl_;
 };
 
 } // namespace gfx_core
