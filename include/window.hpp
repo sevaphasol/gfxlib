@@ -1,25 +1,15 @@
 #pragma once
 
-#include "circle_shape.hpp"
 #include "color.hpp"
 #include "event.hpp"
-#include "mouse.hpp"
-#include "rectangle_shape.hpp"
 #include "transform.hpp"
-#include "vector2.hpp"
 #include "drawable.hpp"
-#include "vertex_array.hpp"
 
 #include <memory>
 
 namespace gfx_core {
 
 class Window {
-    friend Mouse;
-    friend CircleShape;
-    friend RectangleShape;
-    friend VertexArray;
-
   public:
     Window( unsigned int width, unsigned int height, const char* title );
     ~Window();
@@ -43,9 +33,11 @@ class Window {
     pollEvent( Event& event );
 
     void
+    setFramerateLimit( unsigned int limit );
+
+    void
     draw( const Drawable& drawable, Transform transform = Transform::Identity );
 
-  protected:
     void*
     getImpl() const;
 

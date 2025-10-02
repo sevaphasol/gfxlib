@@ -14,7 +14,7 @@ class Transform {
 
     Transform( const Transform& other );
 
-    const Transform&
+    Transform&
     operator=( const Transform& other );
 
     Transform&
@@ -50,7 +50,5 @@ class Transform {
     struct Impl;
     std::unique_ptr<Impl> impl_;
 };
-
-inline const Transform Transform::Identity{};
 
 } // namespace gfx_core

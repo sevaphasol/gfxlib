@@ -56,9 +56,9 @@ class RotatingRects : public gfx_core::Drawable {
     {
         for ( const auto& rect : rects_ )
         {
-            gfx_core::Transform ctransform = transform;
-
-            window.draw( *rect, ctransform.rotate( angle, rect->getPosition() ) );
+            gfx_core::Transform local = transform;
+            local.rotate( angle, rect->getPosition() );
+            window.draw( *rect, local );
         }
     }
 
@@ -87,10 +87,13 @@ main()
     gfx_core::VertexArray vertex_array( gfx_core::PrimitiveType::TriangleStrip );
 
     vertex_array.append( gfx_core::Vertex( { 300, 100 }, gfx_core::Color::Red ) );
+    vertex_array.append( gfx_core::Vertex( { 370, 130 }, gfx_core::Color::Red ) );
+    vertex_array.append( gfx_core::Vertex( { 400, 100 }, gfx_core::Color::Red ) );
     vertex_array.append( gfx_core::Vertex( { 400, 200 }, gfx_core::Color::Red ) );
-    vertex_array.append( gfx_core::Vertex( { 500, 100 }, gfx_core::Color::Red ) );
 
     bool pressed = false;
+
+    window.setFramerateLimit( 60 );
 
     while ( window.isOpen() )
     {
@@ -113,7 +116,7 @@ main()
             }
         }
 
-        rects.angle += 0.01f;
+        rects.angle += 1.0f;
 
         if ( pressed )
         {

@@ -18,14 +18,21 @@ Transform::getImpl()
 
 Transform::~Transform() = default;
 
+const Transform Transform::Identity = Transform();
+
 Transform::Transform() : impl_( std::make_unique<Impl>() ) {}
 
 Transform::Transform( const Transform& other ) : impl_( std::make_unique<Impl>( *other.impl_ ) ) {}
 
-const Transform&
+Transform&
 Transform::operator=( const Transform& other )
 {
-    return other;
+    if ( this != &other )
+    {
+        impl_ = std::make_unique<Impl>( *other.impl_ );
+    }
+
+    return *this;
 }
 
 Transform&

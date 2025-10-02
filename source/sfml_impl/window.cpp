@@ -79,6 +79,12 @@ Window::display()
 }
 
 void
+Window::setFramerateLimit( unsigned int limit )
+{
+    impl_->window.setFramerateLimit( limit );
+}
+
+void
 Window::draw( const Drawable& drawable, Transform transform )
 {
     drawable.draw( *this, transform );
