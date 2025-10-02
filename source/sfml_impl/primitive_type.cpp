@@ -1,4 +1,4 @@
-#include "primitive_type.hpp"
+#include "gfx_core/primitive_type.hpp"
 
 #include <SFML/Graphics/PrimitiveType.hpp>
 

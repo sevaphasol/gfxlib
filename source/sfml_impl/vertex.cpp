@@ -1,6 +1,6 @@
-#include "vertex.hpp"
-#include "color.hpp"
-#include "vector2.hpp"
+#include "gfx_core/vertex.hpp"
+#include "gfx_core/color.hpp"
+#include "gfx_core/vector2.hpp"
 
 namespace gfx_core {
 

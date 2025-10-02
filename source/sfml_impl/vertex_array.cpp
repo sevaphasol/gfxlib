@@ -1,7 +1,7 @@
-#include "vertex_array.hpp"
-#include "window.hpp"
-#include "primitive_type.hpp"
-#include "vertex.hpp"
+#include "gfx_core/vertex_array.hpp"
+#include "gfx_core/window.hpp"
+#include "gfx_core/primitive_type.hpp"
+#include "gfx_core/vertex.hpp"
 
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/Graphics/Vertex.hpp>

@@ -1,7 +1,7 @@
-#include "rectangle_shape.hpp"
-#include "transform.hpp"
-#include "vector2.hpp"
-#include "window.hpp"
+#include "gfx_core/rectangle_shape.hpp"
+#include "gfx_core/transform.hpp"
+#include "gfx_core/vector2.hpp"
+#include "gfx_core/window.hpp"
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>

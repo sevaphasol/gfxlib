@@ -1,5 +1,5 @@
-#include "mouse.hpp"
-#include "window.hpp"
+#include "gfx_core/mouse.hpp"
+#include "gfx_core/window.hpp"
 
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>

@@ -1,6 +1,6 @@
-#include "transformable.hpp"
-#include "transform.hpp"
-#include "vector2.hpp"
+#include "gfx_core/transformable.hpp"
+#include "gfx_core/transform.hpp"
+#include "gfx_core/vector2.hpp"
 
 #include <cmath>
 

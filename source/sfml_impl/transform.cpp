@@ -1,8 +1,6 @@
-#include "transform.hpp"
+#include "gfx_core/transform.hpp"
 
 #include <SFML/Graphics/Transform.hpp>
-#include <cstdio>
-#include <memory>
 
 namespace gfx_core {
 

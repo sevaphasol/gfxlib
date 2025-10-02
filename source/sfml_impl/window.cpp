@@ -1,7 +1,7 @@
-#include "drawable.hpp"
-#include "transform.hpp"
-#include "vector2.hpp"
-#include "window.hpp"
+#include "gfx_core/drawable.hpp"
+#include "gfx_core/transform.hpp"
+#include "gfx_core/vector2.hpp"
+#include "gfx_core/window.hpp"
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>

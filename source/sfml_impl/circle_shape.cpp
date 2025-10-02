@@ -1,6 +1,6 @@
-#include "circle_shape.hpp"
-#include "transform.hpp"
-#include "window.hpp"
+#include "gfx_core/circle_shape.hpp"
+#include "gfx_core/transform.hpp"
+#include "gfx_core/window.hpp"
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
