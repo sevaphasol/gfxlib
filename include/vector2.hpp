@@ -1,7 +1,5 @@
 #pragma once
 
-#include <SFML/System/Vector2.hpp>
-
 namespace gfx_core {
 
 template<typename T>

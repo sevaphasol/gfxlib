@@ -1,11 +1,19 @@
 #include "transformable.hpp"
 #include "transform.hpp"
+#include "vector2.hpp"
 
 #include <cmath>
 
 namespace gfx_core {
 
 Transformable::Transformable() = default;
+
+void
+Transformable::setPosition( float x, float y )
+{
+    position_              = Vector2f( x, y );
+    transform_need_update_ = true;
+}
 
 void
 Transformable::setPosition( const Vector2f& position )
@@ -17,8 +25,14 @@ Transformable::setPosition( const Vector2f& position )
 void
 Transformable::setRotation( float angle )
 {
-    rotation_ = angle;
+    rotation_              = angle;
+    transform_need_update_ = true;
+}
 
+void
+Transformable::setScale( float x, float y )
+{
+    scale_                 = Vector2f( x, y );
     transform_need_update_ = true;
 }
 
@@ -26,6 +40,13 @@ void
 Transformable::setScale( const Vector2f& factors )
 {
     scale_                 = factors;
+    transform_need_update_ = true;
+}
+
+void
+Transformable::setOrigin( float x, float y )
+{
+    origin_                = Vector2f( x, y );
     transform_need_update_ = true;
 }
 
@@ -61,6 +82,12 @@ Transformable::getOrigin() const
 }
 
 void
+Transformable::move( float offset_x, float offset_y )
+{
+    setPosition( position_ + Vector2f( offset_x, offset_y ) );
+}
+
+void
 Transformable::move( const Vector2f& offset )
 {
     setPosition( position_ + offset );
@@ -70,6 +97,12 @@ void
 Transformable::rotate( float angle )
 {
     setRotation( rotation_ + angle );
+}
+
+void
+Transformable::scale( float factor_x, float factor_y )
+{
+    setScale( { scale_.x * factor_x, scale_.y * factor_y } );
 }
 
 void
@@ -83,7 +116,7 @@ Transformable::getTransform() const
 {
     if ( transform_need_update_ )
     {
-        const float angle  = -rotation_ * 180 / M_PI;
+        const float angle  = ( -rotation_ / 180.0f ) * M_PI;
         const float cosine = std::cos( angle );
         const float sine   = std::sin( angle );
         const float sxc    = scale_.x * cosine;

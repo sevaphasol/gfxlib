@@ -5,7 +5,6 @@
 #include "transform.hpp"
 #include "transformable.hpp"
 #include "vector2.hpp"
-#include <SFML/Graphics/RectangleShape.hpp>
 
 #include <memory>
 
@@ -19,17 +18,11 @@ class RectangleShape : public Drawable, public Transformable {
     void
     setSize( const Vector2f& size );
 
+    Vector2f
+    getSize() const;
+
     void
     setFillColor( const gfx_core::Color& color );
-
-    void
-    setPosition( float x, float y );
-
-    void
-    setPosition( const gfx_core::Vector2f& pos );
-
-    Vector2f
-    getPosition() const;
 
     virtual void
     draw( Window& window, Transform transform ) const override;

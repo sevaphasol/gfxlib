@@ -3,7 +3,6 @@
 #include "color.hpp"
 #include "drawable.hpp"
 #include "transformable.hpp"
-#include "vector2.hpp"
 
 #include <memory>
 
@@ -17,14 +16,11 @@ class CircleShape : public Drawable, public Transformable {
     void
     setRadius( float radius );
 
+    float
+    getRadius() const;
+
     void
     setFillColor( const gfx_core::Color& color );
-
-    void
-    setPosition( float x, float y );
-
-    void
-    setPosition( const gfx_core::Vector2f& pos );
 
     virtual void
     draw( Window& window, Transform transform ) const override;

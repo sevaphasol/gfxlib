@@ -63,12 +63,12 @@ class Transformable {
     getInverseTransform() const;
 
   private:
-    Vector2f          origin_;
-    Vector2f          position_;
-    float             rotation_;
-    Vector2f          scale_;
+    Vector2f          origin_{ 0.0f, 0.0f };
+    Vector2f          position_{ 0.0f, 0.0f };
+    float             rotation_{ 0.0f };
+    Vector2f          scale_{ 1.0f, 1.0f };
     mutable Transform transform_;
-    mutable bool      transform_need_update_;
+    mutable bool      transform_need_update_{ true };
 };
 
 } // namespace gfx_core

@@ -33,34 +33,20 @@ RectangleShape::setSize( const Vector2f& size )
     impl_->rectangle_shape.setSize( sf_vector );
 }
 
+Vector2f
+RectangleShape::getSize() const
+{
+    auto sf_size = impl_->rectangle_shape.getSize();
+
+    return Vector2f( sf_size.x, sf_size.y );
+}
+
 void
 RectangleShape::setFillColor( const Color& color )
 {
     sf::Color sf_color( color.r, color.g, color.b, color.a );
 
     impl_->rectangle_shape.setFillColor( sf_color );
-}
-
-void
-RectangleShape::setPosition( float x, float y )
-{
-    impl_->rectangle_shape.setPosition( x, y );
-}
-
-void
-RectangleShape::setPosition( const Vector2f& pos )
-{
-    sf::Vector2f sf_vector( pos.x, pos.y );
-
-    impl_->rectangle_shape.setPosition( sf_vector );
-}
-
-Vector2f
-RectangleShape::getPosition() const
-{
-    auto sf_vector = impl_->rectangle_shape.getPosition();
-
-    return Vector2f( sf_vector.x, sf_vector.y );
 }
 
 void

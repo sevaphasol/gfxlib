@@ -46,6 +46,7 @@ class RotatingRects : public gfx_core::Drawable {
         auto p = std::make_unique<gfx_core::RectangleShape>( gfx_core::Vector2f( 20.0f, 20.0f ) );
         p->setFillColor( gfx_core::Color::Green );
         p->setPosition( x, y );
+        p->setOrigin( 10, 10 );
 
         rects_.push_back( std::move( p ) );
     }
@@ -56,9 +57,8 @@ class RotatingRects : public gfx_core::Drawable {
     {
         for ( const auto& rect : rects_ )
         {
-            gfx_core::Transform local = transform;
-            local.rotate( angle, rect->getPosition() );
-            window.draw( *rect, local );
+            rect->setRotation( angle );
+            window.draw( *rect );
         }
     }
 
@@ -83,6 +83,8 @@ main()
     rects.AddRect( 200, 100 );
     rects.AddRect( 200, 200 );
     rects.AddRect( 200, 300 );
+
+    rects.angle = 0;
 
     gfx_core::VertexArray vertex_array( gfx_core::PrimitiveType::TriangleStrip );
 

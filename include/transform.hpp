@@ -2,7 +2,6 @@
 
 #include "vector2.hpp"
 
-#include <SFML/Graphics/Transform.hpp>
 #include <memory>
 
 namespace gfx_core {

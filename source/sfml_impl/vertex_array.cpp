@@ -31,7 +31,7 @@ class VertexArray::Impl {
     sf::VertexArray vertices;
 
     Impl() = default;
-    explicit Impl( PrimitiveType type, std::size_t vertex_count )
+    Impl( PrimitiveType type, std::size_t vertex_count )
         : vertices( detail::toSFML( type ), vertex_count )
     {
     }
