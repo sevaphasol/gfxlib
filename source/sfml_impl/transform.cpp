@@ -2,11 +2,22 @@
 
 #include <SFML/Graphics/Transform.hpp>
 #include <cstdio>
+#include <memory>
 
 namespace gfx_core {
 
 class Transform::Impl {
   public:
+    Impl() = default;
+
+    // clang-format off
+	Impl(float a00, float a01, float a02,
+         float a10, float a11, float a12,
+         float a20, float a21, float a22) : transform(a00, a01, a02,
+													  a10, a11, a12,
+													  a20, a21, a22) {}
+    // clang-format on
+
     sf::Transform transform;
 };
 
@@ -21,6 +32,17 @@ Transform::~Transform() = default;
 const Transform Transform::Identity = Transform();
 
 Transform::Transform() : impl_( std::make_unique<Impl>() ) {}
+
+// clang-format off
+Transform::Transform(float a00, float a01, float a02,
+                     float a10, float a11, float a12,
+                     float a20, float a21, float a22)
+    : impl_(std::make_unique<Impl>(a00, a01, a02,
+								   a10, a11, a12,
+								   a20, a21, a22))
+{
+}
+// clang-format on
 
 Transform::Transform( const Transform& other ) : impl_( std::make_unique<Impl>( *other.impl_ ) ) {}
 

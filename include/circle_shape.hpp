@@ -2,13 +2,14 @@
 
 #include "color.hpp"
 #include "drawable.hpp"
+#include "transformable.hpp"
 #include "vector2.hpp"
 
 #include <memory>
 
 namespace gfx_core {
 
-class CircleShape : public gfx_core::Drawable {
+class CircleShape : public Drawable, public Transformable {
   public:
     explicit CircleShape( float radius = 0.0f );
     ~CircleShape();

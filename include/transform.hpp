@@ -12,6 +12,12 @@ class Transform {
     Transform();
     ~Transform();
 
+    // clang-format off
+	Transform(float a00, float a01, float a02,
+	          float a10, float a11, float a12,
+	          float a20, float a21, float a22);
+    // clang-format on
+
     Transform( const Transform& other );
 
     Transform&

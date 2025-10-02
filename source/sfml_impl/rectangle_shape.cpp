@@ -34,7 +34,7 @@ RectangleShape::setSize( const Vector2f& size )
 }
 
 void
-RectangleShape::setFillColor( const gfx_core::Color& color )
+RectangleShape::setFillColor( const Color& color )
 {
     sf::Color sf_color( color.r, color.g, color.b, color.a );
 
@@ -48,7 +48,7 @@ RectangleShape::setPosition( float x, float y )
 }
 
 void
-RectangleShape::setPosition( const gfx_core::Vector2f& pos )
+RectangleShape::setPosition( const Vector2f& pos )
 {
     sf::Vector2f sf_vector( pos.x, pos.y );
 
@@ -66,8 +66,10 @@ RectangleShape::getPosition() const
 void
 RectangleShape::draw( Window& window, Transform transform ) const
 {
+    Transform local_transform = transform.combine( getTransform() );
+
     auto* sf_window    = static_cast<sf::RenderWindow*>( window.getImpl() );
-    auto* sf_transform = static_cast<sf::Transform*>( transform.getImpl() );
+    auto* sf_transform = static_cast<sf::Transform*>( local_transform.getImpl() );
 
     sf_window->draw( impl_->rectangle_shape, *sf_transform );
 }

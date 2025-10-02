@@ -52,8 +52,10 @@ CircleShape::setPosition( const gfx_core::Vector2f& pos )
 void
 CircleShape::draw( Window& window, Transform transform ) const
 {
+    Transform local_transform = transform.combine( getTransform() );
+
     auto* sf_window    = static_cast<sf::RenderWindow*>( window.getImpl() );
-    auto* sf_transform = static_cast<sf::Transform*>( transform.getImpl() );
+    auto* sf_transform = static_cast<sf::Transform*>( local_transform.getImpl() );
 
     sf_window->draw( impl_->circle_shape );
 }

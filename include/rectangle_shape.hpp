@@ -2,13 +2,16 @@
 
 #include "color.hpp"
 #include "drawable.hpp"
+#include "transform.hpp"
+#include "transformable.hpp"
 #include "vector2.hpp"
+#include <SFML/Graphics/RectangleShape.hpp>
 
 #include <memory>
 
 namespace gfx_core {
 
-class RectangleShape : public gfx_core::Drawable {
+class RectangleShape : public Drawable, public Transformable {
   public:
     RectangleShape( const Vector2f& size = Vector2f( 0, 0 ) );
     ~RectangleShape();
