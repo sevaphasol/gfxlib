@@ -1,8 +1,11 @@
 #include "color.hpp"
 #include "drawable.hpp"
 #include "event.hpp"
+#include "mouse.hpp"
+#include "primitive_type.hpp"
 #include "rectangle_shape.hpp"
 #include "vector2.hpp"
+#include "vertex_array.hpp"
 #include "window.hpp"
 #include "circle_shape.hpp"
 #include <memory>
@@ -75,20 +78,44 @@ main()
     rects.AddRect( 200, 200 );
     rects.AddRect( 200, 300 );
 
+    gfx_core::VertexArray vertex_array( gfx_core::PrimitiveType::TriangleStrip );
+
+    vertex_array.append( gfx_core::Vertex( { 300, 100 }, gfx_core::Color::Red ) );
+    vertex_array.append( gfx_core::Vertex( { 400, 200 }, gfx_core::Color::Red ) );
+    vertex_array.append( gfx_core::Vertex( { 500, 100 }, gfx_core::Color::Red ) );
+
+    bool pressed = false;
+
     while ( window.isOpen() )
     {
         gfx_core::Event event;
         while ( window.pollEvent( event ) )
         {
-            if ( event.type == gfx_core::Event::Closed )
+            switch ( event.type )
             {
-                window.close();
+                case gfx_core::Event::Closed:
+                    window.close();
+                    break;
+                case gfx_core::Event::MouseButtonPressed:
+                    pressed = true;
+                    break;
+                case gfx_core::Event::MouseButtonReleased:
+                    pressed = false;
+                    break;
+                default:
+                    break;
             }
+        }
+
+        if ( pressed )
+        {
+            vertex_array[1].position = gfx_core::Mouse::getPosition( window );
         }
 
         window.clear( gfx_core::Color::Blue );
         window.draw( circles );
         window.draw( rects );
+        window.draw( vertex_array );
         window.display();
     }
 

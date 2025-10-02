@@ -7,6 +7,7 @@
 #include "rectangle_shape.hpp"
 #include "vector2.hpp"
 #include "drawable.hpp"
+#include "vertex_array.hpp"
 
 #include <memory>
 
@@ -22,6 +23,7 @@ class Window {
     friend Mouse;
     friend CircleShape;
     friend RectangleShape;
+    friend VertexArray;
 
   public:
     Window( unsigned int width, unsigned int height, const char* title );
