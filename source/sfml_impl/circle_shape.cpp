@@ -1,8 +1,10 @@
 #include "circle_shape.hpp"
+#include "transform.hpp"
 #include "window.hpp"
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Transform.hpp>
 
 namespace gfx_core {
 
@@ -15,15 +17,9 @@ class CircleShape::Impl {
     Impl() = default;
 };
 
-void*
-CircleShape::getCircleShapeImpl() const
-{
-    return &impl_->circle_shape;
-}
+CircleShape::~CircleShape() = default;
 
 CircleShape::CircleShape( float radius ) : impl_( std::make_unique<Impl>( radius ) ) {}
-
-CircleShape::~CircleShape() = default;
 
 void
 CircleShape::setRadius( float radius )
@@ -54,9 +50,10 @@ CircleShape::setPosition( const gfx_core::Vector2f& pos )
 }
 
 void
-CircleShape::draw( Window& window ) const
+CircleShape::draw( Window& window, Transform transform ) const
 {
-    auto* sf_window = static_cast<sf::RenderWindow*>( window.getWindowImpl() );
+    auto* sf_window    = static_cast<sf::RenderWindow*>( window.getImpl() );
+    auto* sf_transform = static_cast<sf::Transform*>( transform.getImpl() );
 
     sf_window->draw( impl_->circle_shape );
 }

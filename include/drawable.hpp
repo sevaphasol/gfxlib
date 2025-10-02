@@ -1,5 +1,7 @@
 #pragma once
 
+#include "transform.hpp"
+
 namespace gfx_core {
 
 class Window;
@@ -9,7 +11,7 @@ class Drawable {
     virtual ~Drawable() = default;
 
     virtual void
-    draw( Window& target ) const = 0;
+    draw( Window& target, Transform transform ) const = 0;
 };
 
 } // namespace gfx_core

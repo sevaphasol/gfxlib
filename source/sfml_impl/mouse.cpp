@@ -60,7 +60,7 @@ Mouse::getPosition()
 Vector2i
 Mouse::getPosition( const Window& relative_to )
 {
-    const auto* sf_window = static_cast<const sf::RenderWindow*>( relative_to.getWindowImpl() );
+    const auto* sf_window = static_cast<const sf::RenderWindow*>( relative_to.getImpl() );
 
     if ( sf_window == nullptr )
     {
@@ -80,7 +80,7 @@ Mouse::setPosition( const Vector2i& position )
 void
 Mouse::setPosition( const Vector2i& position, const Window& relative_to )
 {
-    const auto* sf_window = static_cast<const sf::RenderWindow*>( relative_to.getWindowImpl() );
+    const auto* sf_window = static_cast<const sf::RenderWindow*>( relative_to.getImpl() );
 
     if ( sf_window != nullptr )
     {

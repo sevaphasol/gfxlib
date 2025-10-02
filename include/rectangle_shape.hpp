@@ -26,11 +26,7 @@ class RectangleShape : public gfx_core::Drawable {
     setPosition( const gfx_core::Vector2f& pos );
 
     virtual void
-    draw( Window& window ) const override;
-
-  private:
-    void*
-    getRectangleShapeImpl() const;
+    draw( Window& window, Transform transform ) const override;
 
   private:
     class Impl;

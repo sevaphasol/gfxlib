@@ -1,4 +1,5 @@
 #include "rectangle_shape.hpp"
+#include "transform.hpp"
 #include "vector2.hpp"
 #include "window.hpp"
 
@@ -21,15 +22,9 @@ class RectangleShape::Impl {
     Impl() = default;
 };
 
-void*
-RectangleShape::getRectangleShapeImpl() const
-{
-    return &impl_->rectangle_shape;
-}
+RectangleShape::~RectangleShape() = default;
 
 RectangleShape::RectangleShape( const Vector2f& size ) : impl_( std::make_unique<Impl>( size ) ) {}
-
-RectangleShape::~RectangleShape() = default;
 
 void
 RectangleShape::setSize( const Vector2f& size )
@@ -61,9 +56,10 @@ RectangleShape::setPosition( const gfx_core::Vector2f& pos )
 }
 
 void
-RectangleShape::draw( Window& window ) const
+RectangleShape::draw( Window& window, Transform transform ) const
 {
-    auto* sf_window = static_cast<sf::RenderWindow*>( window.getWindowImpl() );
+    auto* sf_window    = static_cast<sf::RenderWindow*>( window.getImpl() );
+    auto* sf_transform = static_cast<sf::Transform*>( transform.getImpl() );
 
     sf_window->draw( impl_->rectangle_shape );
 }

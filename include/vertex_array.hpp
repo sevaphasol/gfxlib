@@ -46,7 +46,7 @@ class VertexArray : public Drawable {
 
   private:
     virtual void
-    draw( Window& target ) const override;
+    draw( Window& target, Transform transform ) const override;
 
   private:
     class Impl;

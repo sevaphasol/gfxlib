@@ -1,8 +1,8 @@
-// vertex_array.cpp
 #include "vertex_array.hpp"
 #include "window.hpp"
 #include "primitive_type.hpp"
 #include "vertex.hpp"
+
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/Graphics/Vertex.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -39,12 +39,12 @@ class VertexArray::Impl {
 
 VertexArray::VertexArray() : impl_( std::make_unique<Impl>() ) {}
 
+VertexArray::~VertexArray() = default;
+
 VertexArray::VertexArray( PrimitiveType type, std::size_t vertex_count )
     : impl_( std::make_unique<Impl>( type, vertex_count ) )
 {
 }
-
-VertexArray::~VertexArray() = default;
 
 std::size_t
 VertexArray::getVertexCount() const
@@ -102,9 +102,11 @@ VertexArray::getBounds() const
 }
 
 void
-VertexArray::draw( Window& target ) const
+VertexArray::draw( Window& target, Transform transform ) const
 {
-    auto* sf_window = static_cast<sf::RenderWindow*>( target.getWindowImpl() );
+    auto* sf_window    = static_cast<sf::RenderWindow*>( target.getImpl() );
+    auto* sf_transform = static_cast<sf::Transform*>( transform.getImpl() );
+
     sf_window->draw( impl_->vertices );
 }
 

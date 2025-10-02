@@ -5,6 +5,7 @@
 #include "event.hpp"
 #include "mouse.hpp"
 #include "rectangle_shape.hpp"
+#include "transform.hpp"
 #include "vector2.hpp"
 #include "drawable.hpp"
 #include "vertex_array.hpp"
@@ -42,11 +43,11 @@ class Window {
     pollEvent( Event& event );
 
     void
-    draw( const Drawable& drawable );
+    draw( const Drawable& drawable, Transform transform = Transform::Default );
 
   protected:
     void*
-    getWindowImpl() const;
+    getImpl() const;
 
   private:
     class Impl;

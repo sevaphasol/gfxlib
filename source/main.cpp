@@ -4,6 +4,7 @@
 #include "mouse.hpp"
 #include "primitive_type.hpp"
 #include "rectangle_shape.hpp"
+#include "transform.hpp"
 #include "vector2.hpp"
 #include "vertex_array.hpp"
 #include "window.hpp"
@@ -25,7 +26,7 @@ class Circles : public gfx_core::Drawable {
 
   private:
     virtual void
-    draw( gfx_core::Window& window ) const override
+    draw( gfx_core::Window& window, gfx_core::Transform transform ) const override
     {
         for ( const auto& circle : circles_ )
         {
@@ -51,11 +52,11 @@ class Rects : public gfx_core::Drawable {
 
   private:
     virtual void
-    draw( gfx_core::Window& window ) const override
+    draw( gfx_core::Window& window, gfx_core::Transform transform ) const override
     {
         for ( const auto& rect : rects_ )
         {
-            window.draw( *rect );
+            window.draw( *rect, transform );
         }
     }
 
@@ -84,10 +85,14 @@ main()
     vertex_array.append( gfx_core::Vertex( { 400, 200 }, gfx_core::Color::Red ) );
     vertex_array.append( gfx_core::Vertex( { 500, 100 }, gfx_core::Color::Red ) );
 
-    bool pressed = false;
+    bool                pressed = false;
+    float               time    = 0.0f;
+    gfx_core::Transform transform;
 
     while ( window.isOpen() )
     {
+        transform = transform.rotate( time );
+
         gfx_core::Event event;
         while ( window.pollEvent( event ) )
         {
@@ -114,9 +119,11 @@ main()
 
         window.clear( gfx_core::Color::Blue );
         window.draw( circles );
-        window.draw( rects );
+        window.draw( rects, transform );
         window.draw( vertex_array );
         window.display();
+
+        time++;
     }
 
     return 0;

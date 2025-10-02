@@ -1,4 +1,5 @@
 #include "drawable.hpp"
+#include "transform.hpp"
 #include "vector2.hpp"
 #include "window.hpp"
 
@@ -33,7 +34,7 @@ class Window::Impl {
 };
 
 void*
-Window::getWindowImpl() const
+Window::getImpl() const
 {
     return &impl_->window;
 }
@@ -78,9 +79,9 @@ Window::display()
 }
 
 void
-Window::draw( const Drawable& drawable )
+Window::draw( const Drawable& drawable, Transform transform )
 {
-    drawable.draw( *this );
+    drawable.draw( *this, transform );
 }
 
 bool
