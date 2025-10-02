@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(sphere-rendering LANGUAGES CXX)
+project(gfx_core LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -10,9 +10,10 @@ pkg_check_modules(SFML REQUIRED IMPORTED_TARGET sfml-graphics sfml-window sfml-s
 
 set(SOURCE_DIR source)
 set(INCLUDE_DIR include)
+set(EXAMPLES_DIR examples)
 
 file( GLOB_RECURSE SOURCE_FILES ${SOURCE_DIR}/*.cpp
-								${SOURCE_DIR}/**/*.cpp )
+								${EXAMPLES_DIR}/*.cpp )
 
 add_executable(gfx_core ${SOURCE_FILES})
 
@@ -28,3 +29,4 @@ target_link_libraries(gfx_core PRIVATE OpenMP::OpenMP_CXX)
 target_include_directories(gfx_core PRIVATE src)
 
 install(TARGETS gfx_core DESTINATION bin)
+
