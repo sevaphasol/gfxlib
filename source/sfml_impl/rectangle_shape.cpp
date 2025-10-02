@@ -55,13 +55,21 @@ RectangleShape::setPosition( const gfx_core::Vector2f& pos )
     impl_->rectangle_shape.setPosition( sf_vector );
 }
 
+Vector2f
+RectangleShape::getPosition() const
+{
+    auto sf_vector = impl_->rectangle_shape.getPosition();
+
+    return Vector2f( sf_vector.x, sf_vector.y );
+}
+
 void
 RectangleShape::draw( Window& window, Transform transform ) const
 {
     auto* sf_window    = static_cast<sf::RenderWindow*>( window.getImpl() );
     auto* sf_transform = static_cast<sf::Transform*>( transform.getImpl() );
 
-    sf_window->draw( impl_->rectangle_shape );
+    sf_window->draw( impl_->rectangle_shape, *sf_transform );
 }
 
 } // namespace gfx_core

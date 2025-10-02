@@ -43,7 +43,7 @@ class Window {
     pollEvent( Event& event );
 
     void
-    draw( const Drawable& drawable, Transform transform = Transform::Default );
+    draw( const Drawable& drawable, Transform transform = Transform::Identity );
 
   protected:
     void*

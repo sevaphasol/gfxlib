@@ -38,7 +38,7 @@ class Circles : public gfx_core::Drawable {
     std::vector<std::unique_ptr<gfx_core::CircleShape>> circles_;
 };
 
-class Rects : public gfx_core::Drawable {
+class RotatingRects : public gfx_core::Drawable {
   public:
     void
     AddRect( float x, float y )
@@ -56,9 +56,14 @@ class Rects : public gfx_core::Drawable {
     {
         for ( const auto& rect : rects_ )
         {
-            window.draw( *rect, transform );
+            gfx_core::Transform ctransform = transform;
+
+            window.draw( *rect, ctransform.rotate( angle, rect->getPosition() ) );
         }
     }
+
+  public:
+    float angle;
 
   private:
     std::vector<std::unique_ptr<gfx_core::RectangleShape>> rects_;
@@ -74,7 +79,7 @@ main()
     circles.AddCircle( 100, 200 );
     circles.AddCircle( 100, 300 );
 
-    Rects rects;
+    RotatingRects rects;
     rects.AddRect( 200, 100 );
     rects.AddRect( 200, 200 );
     rects.AddRect( 200, 300 );
@@ -85,14 +90,10 @@ main()
     vertex_array.append( gfx_core::Vertex( { 400, 200 }, gfx_core::Color::Red ) );
     vertex_array.append( gfx_core::Vertex( { 500, 100 }, gfx_core::Color::Red ) );
 
-    bool                pressed = false;
-    float               time    = 0.0f;
-    gfx_core::Transform transform;
+    bool pressed = false;
 
     while ( window.isOpen() )
     {
-        transform = transform.rotate( time );
-
         gfx_core::Event event;
         while ( window.pollEvent( event ) )
         {
@@ -112,6 +113,8 @@ main()
             }
         }
 
+        rects.angle += 0.01f;
+
         if ( pressed )
         {
             vertex_array[1].position = gfx_core::Mouse::getPosition( window );
@@ -119,11 +122,9 @@ main()
 
         window.clear( gfx_core::Color::Blue );
         window.draw( circles );
-        window.draw( rects, transform );
+        window.draw( rects );
         window.draw( vertex_array );
         window.display();
-
-        time++;
     }
 
     return 0;

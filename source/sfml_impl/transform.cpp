@@ -1,6 +1,7 @@
 #include "transform.hpp"
 
 #include <SFML/Graphics/Transform.hpp>
+#include <cstdio>
 
 namespace gfx_core {
 
@@ -44,20 +45,52 @@ Transform&
 Transform::rotate( float angle_degrees )
 {
     impl_->transform.rotate( angle_degrees );
+
     return *this;
 }
 
 Transform&
-Transform::scale( float x, float y )
+Transform::rotate( float angle_degrees, float center_x, float center_y )
 {
-    impl_->transform.scale( x, y );
+    impl_->transform.rotate( angle_degrees, center_x, center_y );
+
+    return *this;
+}
+
+Transform&
+Transform::rotate( float angle_degrees, const Vector2f& center )
+{
+    impl_->transform.rotate( angle_degrees, center.x, center.y );
+
     return *this;
 }
 
 Transform&
 Transform::scale( float factor )
 {
-    return scale( factor, factor );
+    impl_->transform.scale( factor, factor );
+    return *this;
+}
+
+Transform&
+Transform::scale( const Vector2f& factors )
+{
+    impl_->transform.scale( factors.x, factors.y );
+    return *this;
+}
+
+Transform&
+Transform::scale( float factor, const Vector2f& center )
+{
+    impl_->transform.scale( factor, factor, center.x, center.y );
+    return *this;
+}
+
+Transform&
+Transform::scale( const Vector2f& factors, const Vector2f& center )
+{
+    impl_->transform.scale( factors.x, factors.y, center.x, center.y );
+    return *this;
 }
 
 Transform

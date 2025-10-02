@@ -2,6 +2,7 @@
 
 #include "vector2.hpp"
 
+#include <SFML/Graphics/Transform.hpp>
 #include <memory>
 
 namespace gfx_core {
@@ -24,14 +25,23 @@ class Transform {
     Transform&
     rotate( float angle_degrees );
     Transform&
+    rotate( float angle_degrees, float center_x, float center_y );
+    Transform&
+    rotate( float angle_degrees, const Vector2f& center );
+
+    Transform&
     scale( float factor );
     Transform&
-    scale( float x, float y );
+    scale( const Vector2f& factors );
+    Transform&
+    scale( float factor, const Vector2f& center );
+    Transform&
+    scale( const Vector2f& factors, const Vector2f& center );
 
     Transform
     combine( const Transform& other ) const;
 
-    static const Transform Default;
+    static const Transform Identity;
 
     void*
     getImpl();
@@ -41,6 +51,6 @@ class Transform {
     std::unique_ptr<Impl> impl_;
 };
 
-inline const Transform Transform::Default{};
+inline const Transform Transform::Identity{};
 
 } // namespace gfx_core
