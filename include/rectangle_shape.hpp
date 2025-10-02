@@ -8,12 +8,6 @@
 
 namespace gfx_core {
 
-namespace impl {
-
-class RectangleShape;
-
-}
-
 class RectangleShape : public gfx_core::Drawable {
   public:
     RectangleShape( const Vector2f& size = Vector2f( 0, 0 ) );
@@ -39,7 +33,8 @@ class RectangleShape : public gfx_core::Drawable {
     getRectangleShapeImpl() const;
 
   private:
-    std::unique_ptr<impl::RectangleShape> impl_;
+    class Impl;
+    std::unique_ptr<Impl> impl_;
 };
 
 } // namespace gfx_core

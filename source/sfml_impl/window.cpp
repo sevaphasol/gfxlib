@@ -20,21 +20,17 @@ fromSFML( sf::Mouse::Button button );
 
 }
 
-namespace impl {
-
-class Window {
+class Window::Impl {
   public:
     sf::RenderWindow window;
 
-    Window( unsigned int width, unsigned int height, const char* title )
+    Impl( unsigned int width, unsigned int height, const char* title )
         : window( sf::VideoMode( width, height ), title )
     {
     }
 
-    Window() = default;
+    Impl() = default;
 };
-
-} // namespace impl
 
 void*
 Window::getWindowImpl() const
@@ -43,7 +39,7 @@ Window::getWindowImpl() const
 }
 
 Window::Window( unsigned int width, unsigned int height, const char* title )
-    : impl_( std::make_unique<impl::Window>( width, height, title ) )
+    : impl_( std::make_unique<Impl>( width, height, title ) )
 {
 }
 

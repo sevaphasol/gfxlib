@@ -13,12 +13,6 @@
 
 namespace gfx_core {
 
-namespace impl {
-
-class Window;
-
-}
-
 class Window {
     friend Mouse;
     friend CircleShape;
@@ -55,7 +49,8 @@ class Window {
     getWindowImpl() const;
 
   private:
-    std::unique_ptr<impl::Window> impl_;
+    class Impl;
+    std::unique_ptr<Impl> impl_;
 };
 
 } // namespace gfx_core

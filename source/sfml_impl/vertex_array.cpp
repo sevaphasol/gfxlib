@@ -26,25 +26,21 @@ fromSFML( sf::PrimitiveType type );
 
 } // namespace detail
 
-namespace impl {
-
-class VertexArray {
+class VertexArray::Impl {
   public:
     sf::VertexArray vertices;
 
-    VertexArray() = default;
-    explicit VertexArray( PrimitiveType type, std::size_t vertex_count )
+    Impl() = default;
+    explicit Impl( PrimitiveType type, std::size_t vertex_count )
         : vertices( detail::toSFML( type ), vertex_count )
     {
     }
 };
 
-} // namespace impl
-
-VertexArray::VertexArray() : impl_( std::make_unique<impl::VertexArray>() ) {}
+VertexArray::VertexArray() : impl_( std::make_unique<Impl>() ) {}
 
 VertexArray::VertexArray( PrimitiveType type, std::size_t vertex_count )
-    : impl_( std::make_unique<impl::VertexArray>( type, vertex_count ) )
+    : impl_( std::make_unique<Impl>( type, vertex_count ) )
 {
 }
 

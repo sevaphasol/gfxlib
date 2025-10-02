@@ -9,12 +9,6 @@
 
 namespace gfx_core {
 
-namespace impl {
-
-class VertexArray;
-
-}
-
 class VertexArray : public Drawable {
   public:
     VertexArray();
@@ -55,7 +49,8 @@ class VertexArray : public Drawable {
     draw( Window& target ) const override;
 
   private:
-    std::unique_ptr<impl::VertexArray> impl_;
+    class Impl;
+    std::unique_ptr<Impl> impl_;
 };
 
 } // namespace gfx_core

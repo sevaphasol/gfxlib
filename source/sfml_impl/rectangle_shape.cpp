@@ -8,22 +8,18 @@
 
 namespace gfx_core {
 
-namespace impl {
-
-class RectangleShape {
+class RectangleShape::Impl {
   public:
     sf::RectangleShape rectangle_shape;
 
-    explicit RectangleShape( const Vector2f& size = Vector2f( 0, 0 ) )
+    explicit Impl( const Vector2f& size = Vector2f( 0, 0 ) )
     {
         sf::Vector2f sf_vector( size.x, size.y );
         rectangle_shape.setSize( sf_vector );
     }
 
-    RectangleShape() = default;
+    Impl() = default;
 };
-
-} // namespace impl
 
 void*
 RectangleShape::getRectangleShapeImpl() const
@@ -31,10 +27,7 @@ RectangleShape::getRectangleShapeImpl() const
     return &impl_->rectangle_shape;
 }
 
-RectangleShape::RectangleShape( const Vector2f& size )
-    : impl_( std::make_unique<impl::RectangleShape>( size ) )
-{
-}
+RectangleShape::RectangleShape( const Vector2f& size ) : impl_( std::make_unique<Impl>( size ) ) {}
 
 RectangleShape::~RectangleShape() = default;
 

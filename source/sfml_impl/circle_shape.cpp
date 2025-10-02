@@ -6,18 +6,14 @@
 
 namespace gfx_core {
 
-namespace impl {
-
-class CircleShape {
+class CircleShape::Impl {
   public:
     sf::CircleShape circle_shape;
 
-    explicit CircleShape( float radius ) : circle_shape( radius ) {}
+    explicit Impl( float radius ) : circle_shape( radius ) {}
 
-    CircleShape() = default;
+    Impl() = default;
 };
-
-} // namespace impl
 
 void*
 CircleShape::getCircleShapeImpl() const
@@ -25,7 +21,7 @@ CircleShape::getCircleShapeImpl() const
     return &impl_->circle_shape;
 }
 
-CircleShape::CircleShape( float radius ) : impl_( std::make_unique<impl::CircleShape>( radius ) ) {}
+CircleShape::CircleShape( float radius ) : impl_( std::make_unique<Impl>( radius ) ) {}
 
 CircleShape::~CircleShape() = default;
 

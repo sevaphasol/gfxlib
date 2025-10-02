@@ -8,12 +8,6 @@
 
 namespace gfx_core {
 
-namespace impl {
-
-class CircleShape;
-
-}
-
 class CircleShape : public gfx_core::Drawable {
   public:
     explicit CircleShape( float radius = 0.0f );
@@ -39,7 +33,8 @@ class CircleShape : public gfx_core::Drawable {
     getCircleShapeImpl() const;
 
   private:
-    std::unique_ptr<impl::CircleShape> impl_;
+    class Impl;
+    std::unique_ptr<Impl> impl_;
 };
 
 } // namespace gfx_core
