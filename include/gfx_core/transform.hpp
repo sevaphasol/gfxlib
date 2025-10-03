@@ -51,6 +51,9 @@ class Transform {
     void*
     getImpl();
 
+    const void*
+    getImpl() const;
+
   private:
     struct Impl;
     std::unique_ptr<Impl> impl_;

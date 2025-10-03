@@ -1,6 +1,8 @@
 #include "gfx_core/drawable.hpp"
+#include "gfx_core/primitive_type.hpp"
 #include "gfx_core/transform.hpp"
 #include "gfx_core/vector2.hpp"
+#include "gfx_core/vertex.hpp"
 #include "gfx_core/window.hpp"
 
 #include <SFML/Graphics/CircleShape.hpp>
@@ -9,8 +11,11 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Shape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Transform.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Event.hpp>
+#include <memory>
+#include <iostream>
 
 namespace gfx_core {
 
@@ -19,7 +24,10 @@ namespace detail {
 extern Mouse::Button
 fromSFML( sf::Mouse::Button button );
 
-}
+extern sf::PrimitiveType
+toSFML( PrimitiveType type );
+
+} // namespace detail
 
 class Window::Impl {
   public:
@@ -34,6 +42,12 @@ class Window::Impl {
 };
 
 void*
+Window::getImpl()
+{
+    return &impl_->window;
+}
+
+const void*
 Window::getImpl() const
 {
     return &impl_->window;
@@ -88,6 +102,19 @@ void
 Window::draw( const Drawable& drawable, Transform transform )
 {
     drawable.draw( *this, transform );
+}
+
+void
+Window::draw( const Vertex*    vertices,
+              std::size_t      vertex_count,
+              PrimitiveType    type,
+              const Transform& transform )
+{
+    const auto* sf_vertices  = reinterpret_cast<const sf::Vertex*>( vertices );
+    const auto* sf_transform = static_cast<const sf::Transform*>( transform.getImpl() );
+    auto        sf_type      = detail::toSFML( type );
+
+    impl_->window.draw( sf_vertices, vertex_count, sf_type, *sf_transform );
 }
 
 bool

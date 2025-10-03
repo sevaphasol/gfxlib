@@ -4,34 +4,29 @@
 
 namespace gfx_core {
 
-Vertex::Vertex( const Vector2f& the_position )
+Vertex::Vertex()
+    : position( Vector2f( 0, 0 ) ), color( Color::White ), tex_coords( Vector2f( 0, 0 ) )
 {
-    position   = the_position;
-    color      = Color::White;
-    tex_coords = Vector2f( 0, 0 );
 }
 
-Vertex::Vertex( const Vector2f& the_position, const Color& the_color )
+Vertex::Vertex( const Vector2f& position )
+    : position( position ), color( Color::White ), tex_coords( Vector2f( 0, 0 ) )
 {
-    position   = the_position;
-    color      = the_color;
-    tex_coords = Vector2f( 0, 0 );
 }
 
-Vertex::Vertex( const Vector2f& the_position, const Vector2f& the_tex_coords )
+Vertex::Vertex( const Vector2f& position, const Color& color )
+    : position( position ), color( color ), tex_coords( Vector2f( 0, 0 ) )
 {
-    position   = the_position;
-    color      = Color::White;
-    tex_coords = the_tex_coords;
 }
 
-Vertex::Vertex( const Vector2f& the_position,
-                const Color&    the_color,
-                const Vector2f& the_tex_coords )
+Vertex::Vertex( const Vector2f& position, const Vector2f& tex_coords )
+    : position( position ), color( Color::White ), tex_coords( tex_coords )
 {
-    position   = the_position;
-    color      = the_color;
-    tex_coords = the_tex_coords;
+}
+
+Vertex::Vertex( const Vector2f& position, const Color& color, const Vector2f& tex_coords )
+    : position( position ), color( color ), tex_coords( tex_coords )
+{
 }
 
 } // namespace gfx_core

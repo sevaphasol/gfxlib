@@ -2,6 +2,8 @@
 
 #include "color.hpp"
 #include "event.hpp"
+#include "gfx_core/primitive_type.hpp"
+#include "gfx_core/vertex.hpp"
 #include "transform.hpp"
 #include "drawable.hpp"
 
@@ -38,7 +40,16 @@ class Window {
     void
     draw( const Drawable& drawable, Transform transform = Transform::Identity );
 
+    void
+    draw( const Vertex*    vertices,
+          std::size_t      vertex_count,
+          PrimitiveType    type,
+          const Transform& transform = Transform::Identity );
+
     void*
+    getImpl();
+
+    const void*
     getImpl() const;
 
   private:

@@ -15,6 +15,12 @@ Transform::getImpl()
     return &impl_->transform;
 }
 
+const void*
+Transform::getImpl() const
+{
+    return &impl_->transform;
+}
+
 Transform::~Transform() = default;
 
 const Transform Transform::Identity = Transform();

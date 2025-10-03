@@ -7,13 +7,15 @@ namespace gfx_core {
 
 class Vertex {
   public:
-    Vertex( const Vector2f& the_position );
+    Vertex();
 
-    Vertex( const Vector2f& the_position, const Color& the_color );
+    Vertex( const Vector2f& position );
 
-    Vertex( const Vector2f& the_position, const Vector2f& the_tex_coords );
+    Vertex( const Vector2f& position, const Color& color );
 
-    Vertex( const Vector2f& the_position, const Color& the_color, const Vector2f& the_tex_coords );
+    Vertex( const Vector2f& position, const Vector2f& tex_coords );
+
+    Vertex( const Vector2f& position, const Color& color, const Vector2f& tex_coords );
 
     Vector2f position;
     Color    color;

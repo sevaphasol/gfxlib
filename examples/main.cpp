@@ -8,6 +8,7 @@
 #include "gfx_core/text.hpp"
 #include "gfx_core/transform.hpp"
 #include "gfx_core/vector2.hpp"
+#include "gfx_core/vertex.hpp"
 #include "gfx_core/vertex_array.hpp"
 #include "gfx_core/window.hpp"
 #include "gfx_core/circle_shape.hpp"
@@ -99,6 +100,13 @@ main()
     gfx_core::Text text( "Test", font, 24 );
     text.setPosition( 500, 500 );
 
+    gfx_core::Vertex vertices[2];
+
+    vertices[0].position = { 500, 100 };
+    vertices[0].color    = gfx_core::Color::Red;
+    vertices[1].position = { 600, 200 };
+    vertices[1].color    = gfx_core::Color::Red;
+
     bool pressed = false;
 
     window.setFramerateLimit( 60 );
@@ -136,6 +144,7 @@ main()
         window.draw( rects );
         window.draw( text );
         window.draw( vertex_array );
+        window.draw( vertices, 2, gfx_core::PrimitiveType::Lines );
         window.display();
     }
 
