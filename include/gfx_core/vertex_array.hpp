@@ -17,6 +17,11 @@ class VertexArray : public Drawable {
 
     ~VertexArray();
 
+    VertexArray( const VertexArray& other );
+
+    VertexArray&
+    operator=( const VertexArray& other );
+
     std::size_t
     getVertexCount() const;
 

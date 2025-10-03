@@ -21,6 +21,11 @@ CircleShape::~CircleShape() = default;
 
 CircleShape::CircleShape( float radius ) : impl_( std::make_unique<Impl>( radius ) ) {}
 
+CircleShape::CircleShape( const CircleShape& other )
+    : impl_( std::make_unique<Impl>( *other.impl_ ) )
+{
+}
+
 void
 CircleShape::setRadius( float radius )
 {

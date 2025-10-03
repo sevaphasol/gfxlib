@@ -10,8 +10,9 @@ namespace gfx_core {
 
 class CircleShape : public Drawable, public Transformable {
   public:
-    explicit CircleShape( float radius = 0.0f );
     ~CircleShape();
+    explicit CircleShape( float radius = 0.0f );
+    CircleShape( const CircleShape& other );
 
     void
     setRadius( float radius );

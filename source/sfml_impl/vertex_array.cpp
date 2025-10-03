@@ -41,6 +41,22 @@ VertexArray::VertexArray() : impl_( std::make_unique<Impl>() ) {}
 
 VertexArray::~VertexArray() = default;
 
+VertexArray::VertexArray( const VertexArray& other )
+    : impl_( std::make_unique<Impl>( *other.impl_ ) )
+{
+}
+
+VertexArray&
+VertexArray::operator=( const VertexArray& other )
+{
+    if ( this != &other )
+    {
+        impl_ = std::make_unique<Impl>( *other.impl_ );
+    }
+
+    return *this;
+}
+
 VertexArray::VertexArray( PrimitiveType type, std::size_t vertex_count )
     : impl_( std::make_unique<Impl>( type, vertex_count ) )
 {

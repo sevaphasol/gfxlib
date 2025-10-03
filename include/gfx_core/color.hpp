@@ -18,6 +18,7 @@ class Color {
     static const Color Red;
     static const Color Green;
     static const Color Blue;
+    static const Color Transparent;
 };
 
 inline constexpr Color Color::White{ 255, 255, 255 };
@@ -25,5 +26,6 @@ inline constexpr Color Color::Black{ 0, 0, 0 };
 inline constexpr Color Color::Red{ 255, 0, 0 };
 inline constexpr Color Color::Green{ 0, 255, 0 };
 inline constexpr Color Color::Blue{ 0, 0, 255 };
+inline constexpr Color Color::Transparent{ 0, 0, 0, 0 };
 
 } // namespace gfx_core

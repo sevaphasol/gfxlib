@@ -14,6 +14,7 @@ class RectangleShape : public Drawable, public Transformable {
   public:
     RectangleShape( const Vector2f& size = Vector2f( 0, 0 ) );
     ~RectangleShape();
+    RectangleShape( const RectangleShape& other );
 
     void
     setSize( const Vector2f& size );

@@ -26,6 +26,11 @@ RectangleShape::~RectangleShape() = default;
 
 RectangleShape::RectangleShape( const Vector2f& size ) : impl_( std::make_unique<Impl>( size ) ) {}
 
+RectangleShape::RectangleShape( const RectangleShape& other )
+    : impl_( std::make_unique<Impl>( *other.impl_ ) )
+{
+}
+
 void
 RectangleShape::setSize( const Vector2f& size )
 {
