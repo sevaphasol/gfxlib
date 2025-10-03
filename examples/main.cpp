@@ -1,9 +1,11 @@
 #include "gfx_core/color.hpp"
 #include "gfx_core/drawable.hpp"
 #include "gfx_core/event.hpp"
+#include "gfx_core/font.hpp"
 #include "gfx_core/mouse.hpp"
 #include "gfx_core/primitive_type.hpp"
 #include "gfx_core/rectangle_shape.hpp"
+#include "gfx_core/text.hpp"
 #include "gfx_core/transform.hpp"
 #include "gfx_core/vector2.hpp"
 #include "gfx_core/vertex_array.hpp"
@@ -93,6 +95,10 @@ main()
     vertex_array.append( gfx_core::Vertex( { 400, 100 }, gfx_core::Color::Red ) );
     vertex_array.append( gfx_core::Vertex( { 400, 200 }, gfx_core::Color::Red ) );
 
+    gfx_core::Font font( "assets/JetBrainsMono-Regular.ttf" );
+    gfx_core::Text text( "Test", font, 24 );
+    text.setPosition( 500, 500 );
+
     bool pressed = false;
 
     window.setFramerateLimit( 60 );
@@ -128,6 +134,7 @@ main()
         window.clear( gfx_core::Color::Blue );
         window.draw( circles );
         window.draw( rects );
+        window.draw( text );
         window.draw( vertex_array );
         window.display();
     }
