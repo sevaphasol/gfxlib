@@ -123,7 +123,7 @@ VertexArray::draw( Window& target, Transform transform ) const
     auto* sf_window    = static_cast<sf::RenderWindow*>( target.getImpl() );
     auto* sf_transform = static_cast<sf::Transform*>( transform.getImpl() );
 
-    sf_window->draw( impl_->vertices );
+    sf_window->draw( impl_->vertices, *sf_transform );
 }
 
 } // namespace gfx_core
