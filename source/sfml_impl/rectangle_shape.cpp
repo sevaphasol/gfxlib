@@ -55,6 +55,20 @@ RectangleShape::setFillColor( const Color& color )
 }
 
 void
+RectangleShape::setOutlineThickness( float thickness )
+{
+    impl_->rectangle_shape.setOutlineThickness( thickness );
+}
+
+void
+RectangleShape::setOutlineColor( const Color& color )
+{
+    sf::Color sf_color( color.r, color.g, color.b, color.a );
+
+    impl_->rectangle_shape.setOutlineColor( sf_color );
+}
+
+void
 RectangleShape::draw( Window& window, Transform transform ) const
 {
     Transform local_transform = transform.combine( getTransform() );

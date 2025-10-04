@@ -25,6 +25,12 @@ class RectangleShape : public Drawable, public Transformable {
     void
     setFillColor( const gfx_core::Color& color );
 
+    void
+    setOutlineThickness( float thickness );
+
+    void
+    setOutlineColor( const Color& color );
+
     virtual void
     draw( Window& window, Transform transform ) const override;
 

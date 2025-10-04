@@ -47,6 +47,20 @@ CircleShape::setFillColor( const gfx_core::Color& color )
 }
 
 void
+CircleShape::setOutlineThickness( float thickness )
+{
+    impl_->circle_shape.setOutlineThickness( thickness );
+}
+
+void
+CircleShape::setOutlineColor( const Color& color )
+{
+    sf::Color sf_color( color.r, color.g, color.b, color.a );
+
+    impl_->circle_shape.setOutlineColor( sf_color );
+}
+
+void
 CircleShape::draw( Window& window, Transform transform ) const
 {
     Transform local_transform = transform.combine( getTransform() );

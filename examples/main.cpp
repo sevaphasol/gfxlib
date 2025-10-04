@@ -23,6 +23,8 @@ class Circles : public gfx_core::Drawable {
         auto p = std::make_unique<gfx_core::CircleShape>( 10.0f );
         p->setFillColor( gfx_core::Color::Green );
         p->setPosition( x, y );
+        p->setOutlineColor( gfx_core::Color::Red );
+        p->setOutlineThickness( 2 );
 
         circles_.push_back( std::move( p ) );
     }
@@ -47,9 +49,11 @@ class RotatingRects : public gfx_core::Drawable {
     AddRect( float x, float y )
     {
         auto p = std::make_unique<gfx_core::RectangleShape>( gfx_core::Vector2f( 20.0f, 20.0f ) );
-        p->setFillColor( gfx_core::Color::Green );
+        p->setFillColor( gfx_core::Color::Transparent );
         p->setPosition( x, y );
         p->setOrigin( 10, 10 );
+        p->setOutlineColor( gfx_core::Color::Black );
+        p->setOutlineThickness( 2 );
 
         rects_.push_back( std::move( p ) );
     }
