@@ -47,6 +47,11 @@ Widget::handleEvent( const core::Event& event, EventPhase phase )
 }
 
 void
+Widget::handleCapturePhase( const core::Event& event )
+{
+}
+
+void
 Widget::handleTargetPhase( const core::Event& event )
 {
     switch ( event.type )
@@ -64,6 +69,21 @@ Widget::handleTargetPhase( const core::Event& event )
             assert( !"Unsupported event type" );
             break;
     }
+}
+
+void
+Widget::handleBubblePhase( const core::Event& event )
+{
+}
+
+void
+Widget::onMousePress( const core::Event& event )
+{
+}
+
+void
+Widget::onMouseMove( const core::Event& event )
+{
 }
 
 void
@@ -173,6 +193,11 @@ Widget::draw( core::Window& window, core::Transform transform ) const
     core::Transform widget_transform = transform.combine( getTransform() );
     drawSelf( window, widget_transform );
     drawChildren( window, widget_transform );
+}
+
+void
+Widget::drawSelf( core::Window& window, core::Transform transform ) const
+{
 }
 
 void

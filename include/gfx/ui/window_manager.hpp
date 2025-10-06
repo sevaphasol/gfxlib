@@ -20,14 +20,13 @@ class WindowManager {
     void
     setDeltaTime( float delta_time );
 
+    Widget desktop_;
+
   private:
     void
     handleEvents();
     void
     draw();
-
-  protected:
-    Widget desktop_;
 
   private:
     core::Window window_;
