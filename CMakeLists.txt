@@ -1,32 +1,35 @@
-cmake_minimum_required(VERSION 3.16)
-project(gfx_core LANGUAGES CXX)
+cmake_minimum_required( VERSION 3.16 )
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+project( gfx LANGUAGES CXX )
 
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(SFML REQUIRED IMPORTED_TARGET sfml-graphics sfml-window sfml-system)
+set( CMAKE_CXX_STANDARD 17 )
+set( CMAKE_CXX_STANDARD_REQUIRED ON )
+set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
 
-set(SOURCE_DIR source)
-set(INCLUDE_DIR include)
-set(EXAMPLES_DIR examples)
+find_package( PkgConfig REQUIRED )
+pkg_check_modules( SFML REQUIRED IMPORTED_TARGET sfml-graphics sfml-window sfml-system )
 
-file( GLOB_RECURSE SOURCE_FILES ${SOURCE_DIR}/*.cpp
-								${EXAMPLES_DIR}/*.cpp )
+file( GLOB_RECURSE GFX_SOURCES CONFIGURE_DEPENDS
+    ${CMAKE_CURRENT_SOURCE_DIR}/source/gfx/core/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/source/gfx/ui/*.cpp
+)
 
-add_executable(gfx_core ${SOURCE_FILES})
+add_library( gfx STATIC ${GFX_SOURCES} )
 
-target_include_directories(gfx_core PRIVATE ${INCLUDE_DIR})
+target_include_directories( gfx PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 
-set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}")
+target_link_libraries( gfx PRIVATE PkgConfig::SFML )
 
-target_link_libraries(gfx_core PRIVATE PkgConfig::SFML)
-
-find_package(OpenMP REQUIRED)
-target_link_libraries(gfx_core PRIVATE OpenMP::OpenMP_CXX)
-
-target_include_directories(gfx_core PRIVATE src)
-
-install(TARGETS gfx_core DESTINATION bin)
-
+if( CMAKE_PROJECT_NAME STREQUAL "gfx" )
+    file( GLOB_RECURSE EXAMPLE_SOURCES CONFIGURE_DEPENDS
+        ${CMAKE_CURRENT_SOURCE_DIR}/examples/*.cpp
+    )
+    if( EXAMPLE_SOURCES )
+        add_executable( gfx_example ${EXAMPLE_SOURCES} )
+        target_link_libraries( gfx_example PRIVATE gfx )
+        set( CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}" )
+        install( TARGETS gfx_example DESTINATION bin )
+    endif()
+endif()

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./bin/gfx_core
+./bin/gfx_example
