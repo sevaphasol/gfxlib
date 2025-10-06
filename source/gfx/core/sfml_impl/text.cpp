@@ -145,6 +145,14 @@ Text::getGlobalBounds() const
 }
 
 void
+Text::moveInCenterOfRect( const core::Vector2f& rect_pos, const core::Vector2f& rect_size )
+{
+    const core::FloatRect text_bounds = getLocalBounds();
+    setOrigin( text_bounds.x + text_bounds.w / 2.0f, text_bounds.y + text_bounds.h / 2.0f );
+    setPosition( rect_pos.x + rect_size.x / 2.0f, rect_pos.y + rect_size.y / 2.0f );
+}
+
+void
 Text::draw( Window& window, Transform transform ) const
 {
     Transform local_transform = transform.combine( getTransform() );

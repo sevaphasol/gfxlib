@@ -21,48 +21,25 @@ class Widget : public core::Drawable, public core::Transformable {
     virtual ~Widget() = default;
 
     virtual void
-    handleEvent( const core::Event& event, EventPhase phase );
-    virtual void
-    handleCapturePhase( const core::Event& event );
-    virtual void
-    handleTargetPhase( const core::Event& event );
-    virtual void
-    handleBubblePhase( const core::Event& event );
+    handleEvent( const core::Event& event );
 
-    virtual void
-    onMousePress( const core::Event& event );
-    virtual void
-    onMouseMove( const core::Event& event );
     virtual void
     onIdle( const core::Event& event );
-
-    bool
-    eventPropagationIsStopped() const;
-    void
-    stopEventPropagation();
-
-    virtual void
-    update();
 
     core::Vector2f
     getSize() const;
 
-    void
+    virtual void
     setSize( const core::Vector2f& size );
 
     core::Vector2f
     getRelPos() const;
 
-    void
+    virtual void
     setRelPos( const core::Vector2f& pos );
 
     core::Vector2f
     getAbsPos() const;
-
-    bool
-    isHovered() const;
-    void
-    setHoveredState( bool hovered );
 
     bool
     pointInside( const core::Vector2f& point ) const;
@@ -90,9 +67,7 @@ class Widget : public core::Drawable, public core::Transformable {
 
     std::vector<std::unique_ptr<Widget>> children_;
 
-    Widget* parent_                    = nullptr;
-    bool    is_hovered_                = false;
-    bool    event_propagation_stopped_ = false;
+    Widget* parent_ = nullptr;
 };
 
 } // namespace ui

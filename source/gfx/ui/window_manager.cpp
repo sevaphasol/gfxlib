@@ -5,7 +5,7 @@ namespace gfx {
 namespace ui {
 
 WindowManager::WindowManager( float w, float h, const char* title )
-    : window_( w, h, title ), desktop_( 0, 0, w, h ), renderer_( window_ )
+    : window_( w, h, title ), desktop_( 0, 0, w, h )
 {
     setFramerateLimit( 60 );
 }
@@ -36,31 +36,27 @@ void
 WindowManager::handleEvents()
 {
     core::Event event;
-    bool        has_events = false;
+
     while ( window_.pollEvent( event ) )
     {
-        has_events = true;
         if ( event.type == core::Event::Closed )
         {
             window_.close();
         }
 
-        renderer_.handleEvent( event, desktop_ );
+        desktop_.handleEvent( event );
     }
 
-    if ( !has_events )
-    {
-        core::Event idle_event = core::Event::generateIdleEvent( delta_time_ );
+    core::Event idle_event = core::Event::generateIdleEvent( delta_time_ );
 
-        renderer_.handleEvent( idle_event, desktop_ );
-    }
+    desktop_.handleEvent( idle_event );
 }
 
 void
 WindowManager::draw()
 {
     window_.clear();
-    renderer_.render( desktop_ );
+    window_.draw( desktop_ );
     window_.display();
 }
 

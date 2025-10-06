@@ -74,6 +74,9 @@ class Text : public Drawable, public Transformable {
     FloatRect
     getGlobalBounds() const;
 
+    void
+    moveInCenterOfRect( const core::Vector2f& rect_pos, const core::Vector2f& rect_size );
+
   private:
     virtual void
     draw( Window& window, Transform transform ) const;

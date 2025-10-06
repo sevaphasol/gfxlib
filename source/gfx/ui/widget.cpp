@@ -1,8 +1,10 @@
 #include "gfx/ui/widget.hpp"
+#include "gfx/core/event.hpp"
 #include "gfx/core/vector2.hpp"
 #include "gfx/core/window.hpp"
 
 #include <cassert>
+#include <iostream>
 
 namespace gfx {
 namespace ui {
@@ -11,106 +13,26 @@ Widget::Widget( float x, float y, float w, float h ) : size_( w, h ) { setPositi
 
 Widget::Widget( const core::Vector2f& pos, const core::Vector2f& size ) : size_( size )
 {
-    setPosition( pos );
+    setRelPos( pos );
 }
 
 void
-Widget::handleEvent( const core::Event& event, EventPhase phase )
+Widget::handleEvent( const core::Event& event )
 {
-    switch ( phase )
+    for ( auto& child : children_ )
     {
-        case Capture:
-            handleCapturePhase( event );
-            break;
-            return;
-        case Target:
-            handleTargetPhase( event );
-            break;
-        case Bubble:
-            handleBubblePhase( event );
-            break;
-        default:
-            assert( !"unknown EventPhase" );
-            break;
+        child->handleEvent( event );
     }
 
-    if ( phase != EventPhase::Target && !event_propagation_stopped_ )
+    if ( event.type == core::Event::Idle )
     {
-        for ( auto& child : children_ )
-        {
-            if ( !event_propagation_stopped_ )
-            {
-                child->handleEvent( event, phase );
-            }
-        }
+        onIdle( event );
     }
-}
-
-void
-Widget::handleCapturePhase( const core::Event& event )
-{
-}
-
-void
-Widget::handleTargetPhase( const core::Event& event )
-{
-    switch ( event.type )
-    {
-        case core::Event::MouseButtonPressed:
-            onMousePress( event );
-            break;
-        case core::Event::MouseMoved:
-            onMouseMove( event );
-            break;
-        case core::Event::Idle:
-            onIdle( event );
-            break;
-        default:
-            assert( !"Unsupported event type" );
-            break;
-    }
-}
-
-void
-Widget::handleBubblePhase( const core::Event& event )
-{
-}
-
-void
-Widget::onMousePress( const core::Event& event )
-{
-}
-
-void
-Widget::onMouseMove( const core::Event& event )
-{
 }
 
 void
 Widget::onIdle( const core::Event& event )
 {
-    update();
-}
-
-bool
-Widget::eventPropagationIsStopped() const
-{
-    return event_propagation_stopped_;
-}
-
-void
-Widget::stopEventPropagation()
-{
-    event_propagation_stopped_ = true;
-}
-
-void
-Widget::update()
-{
-    for ( auto& child : children_ )
-    {
-        child->update();
-    }
 }
 
 core::Vector2f
@@ -148,22 +70,13 @@ Widget::getAbsPos() const
 }
 
 bool
-Widget::isHovered() const
-{
-    return is_hovered_;
-}
-
-void
-Widget::setHoveredState( bool hovered )
-{
-    is_hovered_ = hovered;
-}
-
-bool
 Widget::pointInside( const core::Vector2f& point ) const
 {
     core::Vector2f abs_pos = getAbsPos();
     core::Vector2f sz      = getSize();
+
+    std::cerr << "abs_pos = " << abs_pos.x << " " << abs_pos.y << std::endl;
+
     return ( ( point.x >= abs_pos.x && point.x <= abs_pos.x + sz.x ) &&
              ( point.y >= abs_pos.y && point.y <= abs_pos.y + sz.y ) );
 }

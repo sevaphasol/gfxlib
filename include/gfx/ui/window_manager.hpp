@@ -1,6 +1,5 @@
 #pragma once
 #include "gfx/core/window.hpp"
-#include "gfx/ui/renderer.hpp"
 #include "gfx/ui/widget.hpp"
 
 namespace gfx {
@@ -20,17 +19,17 @@ class WindowManager {
     void
     setDeltaTime( float delta_time );
 
-    Widget desktop_;
-
   private:
     void
     handleEvents();
     void
     draw();
 
+  protected:
+    Widget desktop_;
+
   private:
     core::Window window_;
-    Renderer     renderer_;
     float        delta_time_ = 0.0f;
 };
 
