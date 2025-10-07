@@ -77,6 +77,21 @@ class Vector2 {
     }
 
     constexpr friend Vector2<T>
+    operator/( const Vector2<T>& left, const Vector2<T>& right )
+    {
+        return Vector2<T>( left.x / right.x, left.y / right.y );
+    }
+
+    constexpr friend Vector2<T>
+    operator/=( Vector2<T>& left, const Vector2<T>& right )
+    {
+        left.x /= right.x;
+        left.y /= right.y;
+
+        return left;
+    }
+
+    constexpr friend Vector2<T>
     operator/( const Vector2<T>& left, T right )
     {
         return Vector2<T>( left.x / right, left.y / right );

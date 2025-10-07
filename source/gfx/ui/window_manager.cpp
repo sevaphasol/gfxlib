@@ -21,6 +21,18 @@ WindowManager::run()
 }
 
 void
+WindowManager::setBackgroundColor( const gfx::core::Color& color )
+{
+    background_color_ = color;
+}
+
+void
+WindowManager::addWidget( std::unique_ptr<gfx::ui::Widget> widget )
+{
+    desktop_.addChild( std::move( widget ) );
+}
+
+void
 WindowManager::setFramerateLimit( float fps_limit )
 {
     window_.setFramerateLimit( fps_limit );
@@ -63,7 +75,7 @@ WindowManager::handleEvents()
 void
 WindowManager::draw()
 {
-    window_.clear();
+    window_.clear( background_color_ );
     window_.draw( desktop_ );
     window_.display();
 }

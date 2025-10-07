@@ -1,6 +1,8 @@
 #pragma once
+#include "gfx/core/color.hpp"
 #include "gfx/core/window.hpp"
 #include "gfx/ui/widget.hpp"
+#include <memory>
 
 namespace gfx {
 namespace ui {
@@ -8,7 +10,7 @@ namespace ui {
 class WindowManager {
   public:
     explicit WindowManager( float w, float h, const char* title );
-    virtual ~WindowManager() = default;
+    ~WindowManager() = default;
 
     void
     run();
@@ -19,18 +21,23 @@ class WindowManager {
     void
     setDeltaTime( float delta_time );
 
+    void
+    setBackgroundColor( const gfx::core::Color& color );
+
+    void
+    addWidget( std::unique_ptr<gfx::ui::Widget> widget );
+
   private:
     void
     handleEvents();
     void
     draw();
 
-  protected:
-    Widget desktop_;
-
   private:
-    core::Window window_;
-    float        delta_time_ = 0.0f;
+    core::Window     window_;
+    Widget           desktop_;
+    gfx::core::Color background_color_;
+    float            delta_time_ = 0.0f;
 };
 
 } // namespace ui
