@@ -145,7 +145,7 @@ Text::getGlobalBounds() const
 }
 
 void
-Text::moveInCenterOfRect( const core::Vector2f& rect_pos, const core::Vector2f& rect_size )
+Text::moveInCenterOfRect( const core::Vector2f& rect_size, const core::Vector2f& rect_pos )
 {
     const core::FloatRect text_bounds = getLocalBounds();
     setOrigin( text_bounds.x + text_bounds.w / 2.0f, text_bounds.y + text_bounds.h / 2.0f );

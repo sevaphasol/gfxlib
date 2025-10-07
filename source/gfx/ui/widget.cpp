@@ -3,9 +3,6 @@
 #include "gfx/core/vector2.hpp"
 #include "gfx/core/window.hpp"
 
-#include <cassert>
-#include <iostream>
-
 namespace gfx {
 namespace ui {
 
@@ -16,23 +13,145 @@ Widget::Widget( const core::Vector2f& pos, const core::Vector2f& size ) : size_(
     setRelPos( pos );
 }
 
-void
-Widget::handleEvent( const core::Event& event )
+bool
+Widget::isHoveredSelf() const
+{
+    return is_hovered_self_;
+}
+
+bool
+Widget::isHoveredChildren() const
+{
+    return is_hovered_children_;
+}
+
+bool
+Widget::onIdle( const core::Event::IdleEvent& event )
+{
+    onIdleSelf( event );
+    onIdleChildren( event );
+
+    return false;
+}
+
+bool
+Widget::onIdleSelf( const core::Event::IdleEvent& event )
+{
+    return false;
+}
+
+bool
+Widget::onIdleChildren( const core::Event::IdleEvent& event )
 {
     for ( auto& child : children_ )
     {
-        child->handleEvent( event );
+        child->onIdle( event );
     }
 
-    if ( event.type == core::Event::Idle )
-    {
-        onIdle( event );
-    }
+    return false;
 }
 
-void
-Widget::onIdle( const core::Event& event )
+bool
+Widget::onMousePress( const core::Event::MouseButtonEvent& event )
 {
+    if ( !is_hovered_self_ && !is_hovered_children_ )
+    {
+        return false;
+    }
+
+    bool my_event       = onMousePressSelf( event );
+    bool children_event = onMousePressChildren( event );
+
+    return my_event || children_event;
+}
+
+bool
+Widget::onMousePressSelf( const core::Event::MouseButtonEvent& event )
+{
+    return false;
+}
+
+bool
+Widget::onMousePressChildren( const core::Event::MouseButtonEvent& event )
+{
+    bool children_event = false;
+
+    for ( auto it = children_.rbegin(); it != children_.rend(); ++it )
+    {
+        if ( ( *it )->onMousePress( event ) )
+        {
+            children_event = true;
+            return true;
+        }
+    }
+
+    return children_event;
+}
+
+bool
+Widget::onMouseRelease( const core::Event::MouseButtonEvent& event )
+{
+    if ( !is_hovered_self_ && !is_hovered_children_ )
+    {
+        return false;
+    }
+
+    bool my_event       = onMouseReleaseSelf( event );
+    bool children_event = onMouseReleaseChildren( event );
+
+    return my_event || children_event;
+}
+
+bool
+Widget::onMouseReleaseSelf( const core::Event::MouseButtonEvent& event )
+{
+    return false;
+}
+
+bool
+Widget::onMouseReleaseChildren( const core::Event::MouseButtonEvent& event )
+{
+    for ( auto it = children_.rbegin(); it != children_.rend(); ++it )
+    {
+        if ( ( *it )->onMouseRelease( event ) )
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool
+Widget::onMouseMove( const core::Event::MouseMoveEvent& event )
+{
+    bool my_event       = onMouseMoveSelf( event );
+    bool children_event = onMouseMoveChildren( event );
+
+    return my_event || children_event;
+}
+
+bool
+Widget::onMouseMoveSelf( const core::Event::MouseMoveEvent& event )
+{
+    is_hovered_self_ = pointInside( core::Vector2f( event.x, event.y ) );
+
+    return is_hovered_self_;
+}
+
+bool
+Widget::onMouseMoveChildren( const core::Event::MouseMoveEvent& event )
+{
+    for ( auto it = children_.rbegin(); it != children_.rend(); ++it )
+    {
+        if ( ( *it )->onMouseMove( event ) )
+        {
+            is_hovered_children_ = true;
+            return true;
+        }
+    }
+
+    return false;
 }
 
 core::Vector2f
@@ -74,8 +193,6 @@ Widget::pointInside( const core::Vector2f& point ) const
 {
     core::Vector2f abs_pos = getAbsPos();
     core::Vector2f sz      = getSize();
-
-    std::cerr << "abs_pos = " << abs_pos.x << " " << abs_pos.y << std::endl;
 
     return ( ( point.x >= abs_pos.x && point.x <= abs_pos.x + sz.x ) &&
              ( point.y >= abs_pos.y && point.y <= abs_pos.y + sz.y ) );

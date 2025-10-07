@@ -75,7 +75,8 @@ class Text : public Drawable, public Transformable {
     getGlobalBounds() const;
 
     void
-    moveInCenterOfRect( const core::Vector2f& rect_pos, const core::Vector2f& rect_size );
+    moveInCenterOfRect( const core::Vector2f& rect_size,
+                        const core::Vector2f& rect_pos = { 0.0f, 0.0f } );
 
   private:
     virtual void

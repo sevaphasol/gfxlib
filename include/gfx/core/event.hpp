@@ -35,15 +35,10 @@ class Event {
         IdleEvent        idle;
     };
 
-    static Event
+    static Event::IdleEvent
     generateIdleEvent( float delta_time )
     {
-        Event idle_event = {};
-
-        idle_event.type            = Type::Idle;
-        idle_event.idle.delta_time = delta_time;
-
-        return idle_event;
+        return { delta_time };
     }
 
     Event() : type( Unknown ) {}

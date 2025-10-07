@@ -36,20 +36,28 @@ void
 WindowManager::handleEvents()
 {
     core::Event event;
-
     while ( window_.pollEvent( event ) )
     {
-        if ( event.type == core::Event::Closed )
+        switch ( event.type )
         {
-            window_.close();
+            case core::Event::Closed:
+                window_.close();
+                break;
+            case core::Event::MouseButtonPressed:
+                desktop_.onMousePress( event.mouse_button );
+                break;
+            case core::Event::MouseButtonReleased:
+                desktop_.onMouseRelease( event.mouse_button );
+                break;
+            case core::Event::MouseMoved:
+                desktop_.onMouseMove( event.mouse_move );
+                break;
+            default:
+                break;
         }
-
-        desktop_.handleEvent( event );
     }
 
-    core::Event idle_event = core::Event::generateIdleEvent( delta_time_ );
-
-    desktop_.handleEvent( idle_event );
+    desktop_.onIdle( core::Event::generateIdleEvent( delta_time_ ) );
 }
 
 void
