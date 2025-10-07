@@ -81,6 +81,16 @@ Widget::onMousePress( const core::Event::MouseButtonEvent& event )
 bool
 Widget::onMousePressSelf( const core::Event::MouseButtonEvent& event )
 {
+    if ( is_draggable_ && event.button == core::Mouse::Left )
+    {
+        is_dragging_ = true;
+
+        core::Vector2f mouse_pos( event.x, event.y );
+        drag_offset_ = mouse_pos - getAbsPos();
+
+        return true;
+    }
+
     return false;
 }
 
@@ -118,6 +128,12 @@ Widget::onMouseRelease( const core::Event::MouseButtonEvent& event )
 bool
 Widget::onMouseReleaseSelf( const core::Event::MouseButtonEvent& event )
 {
+    if ( is_dragging_ && event.button == core::Mouse::Left )
+    {
+        is_dragging_ = false;
+        return true;
+    }
+
     return false;
 }
 
@@ -147,20 +163,13 @@ Widget::onMouseMove( const core::Event::MouseMoveEvent& event )
 bool
 Widget::onMouseMoveSelf( const core::Event::MouseMoveEvent& event )
 {
-    core::Vector2f cur_mouse_pos = core::Vector2f( event.x, event.y );
+    core::Vector2f mouse_pos( event.x, event.y );
+    is_hovered_self_ = pointInside( mouse_pos );
 
-    is_hovered_self_ = pointInside( cur_mouse_pos );
-
-    bool is_pressed = gfx::core::Mouse::isButtonPressed( gfx::core::Mouse::Left );
-
-    if ( is_hovered_self_ && is_draggable_ && is_pressed )
+    if ( is_dragging_ && is_hovered_self_ )
     {
-        static core::Vector2f prev_mouse_pos = cur_mouse_pos;
-
-        core::Vector2f shift = cur_mouse_pos - prev_mouse_pos;
-        move( shift );
-
-        prev_mouse_pos = cur_mouse_pos;
+        setRelPos( mouse_pos - drag_offset_ - getParentAbsPos() );
+        return true;
     }
 
     return is_hovered_self_;
@@ -206,11 +215,16 @@ Widget::setRelPos( const core::Vector2f& pos )
 }
 
 core::Vector2f
+Widget::getParentAbsPos() const
+{
+    return ( parent_ != nullptr ) ? parent_->getAbsPos() : core::Vector2f( 0, 0 );
+}
+
+core::Vector2f
 Widget::getAbsPos() const
 {
-    core::Vector2f rel_pos = getRelPos();
-    core::Vector2f parent_abs_pos =
-        ( parent_ != nullptr ) ? parent_->getAbsPos() : core::Vector2f( 0, 0 );
+    core::Vector2f rel_pos        = getRelPos();
+    core::Vector2f parent_abs_pos = getParentAbsPos();
 
     return parent_abs_pos + rel_pos;
 }

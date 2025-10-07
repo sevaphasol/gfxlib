@@ -73,6 +73,8 @@ class Widget : public core::Drawable, public core::Transformable {
     setRelPos( const core::Vector2f& pos );
     core::Vector2f
     getAbsPos() const;
+    core::Vector2f
+    getParentAbsPos() const;
     bool
     pointInside( const core::Vector2f& point ) const;
 
@@ -90,7 +92,9 @@ class Widget : public core::Drawable, public core::Transformable {
 
     Widget* parent_ = nullptr;
 
-    bool is_draggable_ = false;
+    bool           is_draggable_ = false;
+    bool           is_dragging_  = false;
+    core::Vector2f drag_offset_  = { 0.0f, 0.0f };
 
     bool is_hovered_self_     = false;
     bool is_hovered_children_ = false;
