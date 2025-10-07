@@ -41,10 +41,12 @@ Widget::setDraggable( bool state )
 bool
 Widget::onIdle( const core::Event::IdleEvent& event )
 {
-    onIdleSelf( event );
-    onIdleChildren( event );
+    if ( onIdleChildren( event ) )
+    {
+        return true;
+    }
 
-    return false;
+    return onIdleSelf( event );
 }
 
 bool
@@ -56,9 +58,12 @@ Widget::onIdleSelf( const core::Event::IdleEvent& event )
 bool
 Widget::onIdleChildren( const core::Event::IdleEvent& event )
 {
-    for ( auto& child : children_ )
+    for ( auto it = children_.rbegin(); it != children_.rend(); ++it )
     {
-        child->onIdle( event );
+        if ( ( *it )->onIdle( event ) )
+        {
+            return true;
+        }
     }
 
     return false;
@@ -72,16 +77,18 @@ Widget::onMousePress( const core::Event::MouseButtonEvent& event )
         return false;
     }
 
-    bool my_event       = onMousePressSelf( event );
-    bool children_event = onMousePressChildren( event );
+    if ( onMousePressChildren( event ) )
+    {
+        return true;
+    }
 
-    return my_event || children_event;
+    return onMousePressSelf( event );
 }
 
 bool
 Widget::onMousePressSelf( const core::Event::MouseButtonEvent& event )
 {
-    if ( is_draggable_ && event.button == core::Mouse::Left )
+    if ( is_draggable_ && event.button == core::Mouse::Left && is_hovered_self_ )
     {
         is_dragging_ = true;
 
@@ -97,18 +104,15 @@ Widget::onMousePressSelf( const core::Event::MouseButtonEvent& event )
 bool
 Widget::onMousePressChildren( const core::Event::MouseButtonEvent& event )
 {
-    bool children_event = false;
-
     for ( auto it = children_.rbegin(); it != children_.rend(); ++it )
     {
         if ( ( *it )->onMousePress( event ) )
         {
-            children_event = true;
             return true;
         }
     }
 
-    return children_event;
+    return false;
 }
 
 bool
@@ -119,10 +123,12 @@ Widget::onMouseRelease( const core::Event::MouseButtonEvent& event )
         return false;
     }
 
-    bool my_event       = onMouseReleaseSelf( event );
-    bool children_event = onMouseReleaseChildren( event );
+    if ( onMouseReleaseChildren( event ) )
+    {
+        return true;
+    }
 
-    return my_event || children_event;
+    return onMouseReleaseSelf( event );
 }
 
 bool
@@ -154,10 +160,12 @@ Widget::onMouseReleaseChildren( const core::Event::MouseButtonEvent& event )
 bool
 Widget::onMouseMove( const core::Event::MouseMoveEvent& event )
 {
-    bool my_event       = onMouseMoveSelf( event );
-    bool children_event = onMouseMoveChildren( event );
+    if ( onMouseMoveChildren( event ) )
+    {
+        return true;
+    }
 
-    return my_event || children_event;
+    return onMouseMoveSelf( event );
 }
 
 bool
@@ -166,7 +174,7 @@ Widget::onMouseMoveSelf( const core::Event::MouseMoveEvent& event )
     core::Vector2f mouse_pos( event.x, event.y );
     is_hovered_self_ = pointInside( mouse_pos );
 
-    if ( is_dragging_ && is_hovered_self_ )
+    if ( is_dragging_ )
     {
         setRelPos( mouse_pos - drag_offset_ - getParentAbsPos() );
         return true;
