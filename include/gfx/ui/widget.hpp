@@ -51,6 +51,11 @@ class Widget : public core::Drawable, public core::Transformable {
     bool
     isHoveredChildren() const;
 
+    bool
+    isDraggable() const;
+    void
+    setDraggable( bool state );
+
     void
     addChild( std::unique_ptr<Widget> child );
     const std::vector<std::unique_ptr<Widget>>&
@@ -84,6 +89,8 @@ class Widget : public core::Drawable, public core::Transformable {
     std::vector<std::unique_ptr<Widget>> children_;
 
     Widget* parent_ = nullptr;
+
+    bool is_draggable_ = false;
 
     bool is_hovered_self_     = false;
     bool is_hovered_children_ = false;

@@ -1,5 +1,6 @@
 #include "gfx/ui/widget.hpp"
 #include "gfx/core/event.hpp"
+#include "gfx/core/mouse.hpp"
 #include "gfx/core/vector2.hpp"
 #include "gfx/core/window.hpp"
 
@@ -23,6 +24,18 @@ bool
 Widget::isHoveredChildren() const
 {
     return is_hovered_children_;
+}
+
+bool
+Widget::isDraggable() const
+{
+    return is_draggable_;
+}
+
+void
+Widget::setDraggable( bool state )
+{
+    is_draggable_ = state;
 }
 
 bool
@@ -134,7 +147,21 @@ Widget::onMouseMove( const core::Event::MouseMoveEvent& event )
 bool
 Widget::onMouseMoveSelf( const core::Event::MouseMoveEvent& event )
 {
-    is_hovered_self_ = pointInside( core::Vector2f( event.x, event.y ) );
+    core::Vector2f cur_mouse_pos = core::Vector2f( event.x, event.y );
+
+    is_hovered_self_ = pointInside( cur_mouse_pos );
+
+    bool is_pressed = gfx::core::Mouse::isButtonPressed( gfx::core::Mouse::Left );
+
+    if ( is_hovered_self_ && is_draggable_ && is_pressed )
+    {
+        static core::Vector2f prev_mouse_pos = cur_mouse_pos;
+
+        core::Vector2f shift = cur_mouse_pos - prev_mouse_pos;
+        move( shift );
+
+        prev_mouse_pos = cur_mouse_pos;
+    }
 
     return is_hovered_self_;
 }
