@@ -46,6 +46,9 @@ class Widget : public core::Drawable, public core::Transformable {
     virtual bool
     onMouseMoveChildren( const core::Event::MouseMoveEvent& event );
 
+    void
+    bringToFront( Widget* child );
+
     bool
     isHoveredSelf() const;
     bool

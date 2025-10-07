@@ -38,6 +38,21 @@ Widget::setDraggable( bool state )
     is_draggable_ = state;
 }
 
+void
+Widget::bringToFront( Widget* child )
+{
+    for ( auto it = children_.begin(); it != children_.end(); ++it )
+    {
+        if ( it->get() == child )
+        {
+            auto tmp = std::move( *it );
+            children_.erase( it );
+            children_.push_back( std::move( tmp ) );
+            break;
+        }
+    }
+}
+
 bool
 Widget::onIdle( const core::Event::IdleEvent& event )
 {
@@ -90,6 +105,11 @@ Widget::onMousePressSelf( const core::Event::MouseButtonEvent& event )
 {
     if ( is_draggable_ && event.button == core::Mouse::Left && is_hovered_self_ )
     {
+        if ( parent_ != nullptr )
+        {
+            parent_->bringToFront( this );
+        }
+
         is_dragging_ = true;
 
         core::Vector2f mouse_pos( event.x, event.y );
