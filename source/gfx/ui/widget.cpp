@@ -87,10 +87,10 @@ Widget::onIdleChildren( const core::Event::IdleEvent& event )
 bool
 Widget::onMousePress( const core::Event::MouseButtonEvent& event )
 {
-    if ( !is_hovered_self_ && !is_hovered_children_ )
-    {
-        return false;
-    }
+    // if ( !is_hovered_self_ && !is_hovered_children_ )
+    // {
+    //     return false;
+    // }
 
     if ( onMousePressChildren( event ) )
     {
@@ -103,17 +103,22 @@ Widget::onMousePress( const core::Event::MouseButtonEvent& event )
 bool
 Widget::onMousePressSelf( const core::Event::MouseButtonEvent& event )
 {
-    if ( is_draggable_ && event.button == core::Mouse::Left && is_hovered_self_ )
+    if ( event.button == core::Mouse::Left && is_hovered_self_ )
     {
+        is_pressed_ = true;
+
         if ( parent_ != nullptr )
         {
             parent_->bringToFront( this );
         }
 
-        is_dragging_ = true;
+        if ( is_draggable_ )
+        {
+            is_dragging_ = true;
 
-        core::Vector2f mouse_pos( event.x, event.y );
-        drag_offset_ = mouse_pos - getAbsPos();
+            core::Vector2f mouse_pos( event.x, event.y );
+            drag_offset_ = mouse_pos - getAbsPos();
+        }
 
         return true;
     }
@@ -138,10 +143,10 @@ Widget::onMousePressChildren( const core::Event::MouseButtonEvent& event )
 bool
 Widget::onMouseRelease( const core::Event::MouseButtonEvent& event )
 {
-    if ( !is_hovered_self_ && !is_hovered_children_ )
-    {
-        return false;
-    }
+    // if ( !is_hovered_self_ && !is_hovered_children_ )
+    // {
+    //     return false;
+    // }
 
     if ( onMouseReleaseChildren( event ) )
     {
@@ -154,6 +159,8 @@ Widget::onMouseRelease( const core::Event::MouseButtonEvent& event )
 bool
 Widget::onMouseReleaseSelf( const core::Event::MouseButtonEvent& event )
 {
+    is_pressed_ = false;
+
     if ( is_dragging_ && event.button == core::Mouse::Left )
     {
         is_dragging_ = false;
@@ -193,6 +200,11 @@ Widget::onMouseMoveSelf( const core::Event::MouseMoveEvent& event )
 {
     core::Vector2f mouse_pos( event.x, event.y );
     is_hovered_self_ = pointInside( mouse_pos );
+
+    if ( !is_hovered_self_ )
+    {
+        is_pressed_ = false;
+    }
 
     if ( is_dragging_ )
     {

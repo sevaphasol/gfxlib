@@ -95,6 +95,8 @@ class Widget : public core::Drawable, public core::Transformable {
 
     Widget* parent_ = nullptr;
 
+    bool is_pressed_ = false;
+
     bool           is_draggable_ = false;
     bool           is_dragging_  = false;
     core::Vector2f drag_offset_  = { 0.0f, 0.0f };
