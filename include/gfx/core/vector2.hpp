@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 namespace gfx {
 namespace core {
 
@@ -116,6 +118,58 @@ class Vector2 {
     operator!=( const Vector2<T>& left, const Vector2<T>& right )
     {
         return ( left.x != right.x ) || ( left.y != right.y );
+    }
+
+    constexpr bool
+    valid() const
+    {
+        return !( std::isnan( x ) || std::isnan( y ) );
+    }
+
+    constexpr friend T
+    scalarMul( const Vector2<T> left, const Vector2<T> right )
+    {
+        return left.x * right.x + left.y * right.y;
+    }
+
+    constexpr friend T
+    calcCos( const Vector2<T>& left, const Vector2<T>& right )
+    {
+        return scalarMul( left, right ) / ( left.getLen() * right.getLen() );
+    }
+
+    float
+    calcSin( const Vector2<T>& left, const Vector2<T>& right )
+    {
+        return std::sin( std::acos( calcCos( left, right ) ) );
+    }
+
+    float
+    vectorMulModule( const Vector2<T>& left, const Vector2<T>& right )
+    {
+        return left.getLen() * right.getLen() * calcSin( left, right );
+    }
+
+    constexpr float
+    getLenSq() const
+    {
+        return scalarMul( *this, *this );
+    }
+
+    constexpr float
+    getLen() const
+    {
+        return std::sqrt( getLenSq() );
+    }
+
+    constexpr Vector2<T>
+    norm()
+    {
+        float len = getLen();
+        x /= len;
+        y /= len;
+
+        return *this;
     }
 };
 
