@@ -85,6 +85,68 @@ Widget::onIdleChildren( const core::Event::IdleEvent& event )
 }
 
 bool
+Widget::onKeyPress( const core::Event::KeyEvent& event )
+{
+    if ( onKeyPressChildren( event ) )
+    {
+        return true;
+    }
+
+    return onKeyPressSelf( event );
+}
+
+bool
+Widget::onKeyPressSelf( const core::Event::KeyEvent& event )
+{
+    return false;
+}
+
+bool
+Widget::onKeyPressChildren( const core::Event::KeyEvent& event )
+{
+    for ( auto it = children_.rbegin(); it != children_.rend(); ++it )
+    {
+        if ( ( *it )->onKeyPress( event ) )
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool
+Widget::onKeyRelease( const core::Event::KeyEvent& event )
+{
+    if ( onKeyReleaseChildren( event ) )
+    {
+        return true;
+    }
+
+    return onKeyReleaseSelf( event );
+}
+
+bool
+Widget::onKeyReleaseSelf( const core::Event::KeyEvent& event )
+{
+    return false;
+}
+
+bool
+Widget::onKeyReleaseChildren( const core::Event::KeyEvent& event )
+{
+    for ( auto it = children_.rbegin(); it != children_.rend(); ++it )
+    {
+        if ( ( *it )->onKeyRelease( event ) )
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool
 Widget::onMousePress( const core::Event::MouseButtonEvent& event )
 {
     // if ( !is_hovered_self_ && !is_hovered_children_ )

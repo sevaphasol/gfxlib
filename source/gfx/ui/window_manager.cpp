@@ -55,6 +55,12 @@ WindowManager::handleEvents()
             case core::Event::Closed:
                 window_.close();
                 break;
+            case core::Event::KeyPressed:
+                desktop_.onKeyPress( event.key );
+                break;
+            case core::Event::KeyReleased:
+                desktop_.onKeyRelease( event.key );
+                break;
             case core::Event::MouseButtonPressed:
                 desktop_.onMousePress( event.mouse_button );
                 break;

@@ -26,6 +26,20 @@ class Widget : public core::Drawable, public core::Transformable {
     onIdleChildren( const core::Event::IdleEvent& event );
 
     bool
+    onKeyPress( const core::Event::KeyEvent& event );
+    virtual bool
+    onKeyPressSelf( const core::Event::KeyEvent& event );
+    virtual bool
+    onKeyPressChildren( const core::Event::KeyEvent& event );
+
+    bool
+    onKeyRelease( const core::Event::KeyEvent& event );
+    virtual bool
+    onKeyReleaseSelf( const core::Event::KeyEvent& event );
+    virtual bool
+    onKeyReleaseChildren( const core::Event::KeyEvent& event );
+
+    bool
     onMousePress( const core::Event::MouseButtonEvent& event );
     virtual bool
     onMousePressSelf( const core::Event::MouseButtonEvent& event );

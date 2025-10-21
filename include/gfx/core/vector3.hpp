@@ -145,13 +145,13 @@ class Vector3 {
         return scalarMul( left, right ) / ( left.getLen() * right.getLen() );
     }
 
-    float
+    constexpr friend float
     calcSin( const Vector3<T>& left, const Vector3<T>& right )
     {
         return std::sin( std::acos( calcCos( left, right ) ) );
     }
 
-    float
+    constexpr friend float
     vectorMulModule( const Vector3<T>& left, const Vector3<T>& right )
     {
         return left.getLen() * right.getLen() * calcSin( left, right );
@@ -170,7 +170,7 @@ class Vector3 {
     }
 
     constexpr Vector3<T>
-    norm()
+    normalize()
     {
         float len = getLen();
         x /= len;
@@ -179,7 +179,20 @@ class Vector3 {
 
         return *this;
     }
+
+    constexpr Vector3<T>
+    calcReflected( const Vector3<T>& normal ) const
+    {
+        return *this + normal * 2;
+    }
+
+    static const Vector3<T> Nan;
 };
+
+template<typename T>
+inline const Vector3<T> Vector3<T>::Nan( std::numeric_limits<T>::quiet_NaN(),
+                                         std::numeric_limits<T>::quiet_NaN(),
+                                         std::numeric_limits<T>::quiet_NaN() );
 
 using Vector3f = Vector3<float>;
 using Vector3i = Vector3<int>;

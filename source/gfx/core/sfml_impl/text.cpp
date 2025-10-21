@@ -109,13 +109,13 @@ Text::setStyle( Text::Style style )
 void
 Text::setFillColor( const Color& color )
 {
-    impl_->text.setFillColor( sf::Color( color.r, color.b, color.g, color.a ) );
+    impl_->text.setFillColor( sf::Color( color.r, color.g, color.b, color.a ) );
 }
 
 void
 Text::setOutlineColor( const Color& color )
 {
-    impl_->text.setOutlineColor( sf::Color( color.r, color.b, color.g, color.a ) );
+    impl_->text.setOutlineColor( sf::Color( color.r, color.g, color.b, color.a ) );
 }
 
 void

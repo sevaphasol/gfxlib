@@ -1,4 +1,5 @@
 #include "gfx/core/drawable.hpp"
+#include "gfx/core/keyboard.hpp"
 #include "gfx/core/primitive_type.hpp"
 #include "gfx/core/transform.hpp"
 #include "gfx/core/vector2.hpp"
@@ -15,6 +16,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Event.hpp>
 
+#include <SFML/Window/Keyboard.hpp>
 #include <memory>
 
 namespace gfx {
@@ -24,6 +26,9 @@ namespace detail {
 
 extern Mouse::Button
 fromSFML( sf::Mouse::Button button );
+
+extern Keyboard::Key
+fromSFML( sf::Keyboard::Key key );
 
 extern sf::PrimitiveType
 toSFML( PrimitiveType type );
@@ -129,6 +134,14 @@ Window::pollEvent( Event& event )
         {
             case sf::Event::Closed:
                 event.type = Event::Closed;
+                break;
+            case sf::Event::KeyPressed:
+                event.type     = Event::KeyPressed;
+                event.key.code = detail::fromSFML( sf_event.key.code );
+                break;
+            case sf::Event::KeyReleased:
+                event.type     = Event::KeyReleased;
+                event.key.code = detail::fromSFML( sf_event.key.code );
                 break;
             case sf::Event::MouseButtonPressed:
                 event.type                = Event::MouseButtonPressed;

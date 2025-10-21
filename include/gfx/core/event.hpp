@@ -1,12 +1,18 @@
 #pragma once
 
 #include "gfx/core/mouse.hpp"
+#include "gfx/core/keyboard.hpp"
 
 namespace gfx {
 namespace core {
 
 class Event {
   public:
+    struct KeyEvent
+    {
+        Keyboard::Key code;
+    };
+
     struct MouseMoveEvent
     {
         int x;
@@ -25,11 +31,21 @@ class Event {
         float delta_time;
     };
 
-    enum Type { Closed, MouseButtonPressed, MouseButtonReleased, MouseMoved, Idle, Unknown };
+    enum Type {
+        Closed,
+        KeyPressed,
+        KeyReleased,
+        MouseButtonPressed,
+        MouseButtonReleased,
+        MouseMoved,
+        Idle,
+        Unknown
+    };
 
     Type type;
 
     union {
+        KeyEvent         key;
         MouseMoveEvent   mouse_move;
         MouseButtonEvent mouse_button;
         IdleEvent        idle;
