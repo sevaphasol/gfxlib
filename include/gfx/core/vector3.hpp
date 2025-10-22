@@ -127,6 +127,38 @@ class Vector3 {
         return ( left.x != right.x ) || ( left.y != right.y ) || ( left.z != right.z );
     }
 
+    constexpr T&
+    operator[]( size_t idx )
+    {
+        switch ( idx )
+        {
+            case 0:
+                return x;
+            case 1:
+                return y;
+            case 2:
+                return z;
+            default:
+                return z;
+        }
+    }
+
+    constexpr const T&
+    operator[]( size_t idx ) const
+    {
+        switch ( idx )
+        {
+            case 0:
+                return x;
+            case 1:
+                return y;
+            case 2:
+                return z;
+            default:
+                return z;
+        }
+    }
+
     constexpr bool
     valid() const
     {
