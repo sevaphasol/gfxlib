@@ -73,6 +73,12 @@ class Vector3 {
         return Vector3<T>( right.x * left, right.y * left, right.z * left );
     }
 
+    constexpr friend Vector3<T>
+    operator*( const Vector3<T>& left, const Vector3<T>& right )
+    {
+        return Vector3<T>( left.x * right.x, left.y * right.y, left.z * right.z );
+    }
+
     constexpr friend Vector3<T>&
     operator*=( Vector3<T>& left, T right )
     {
@@ -113,6 +119,18 @@ class Vector3 {
         left.z /= right;
 
         return left;
+    }
+
+    constexpr friend Vector3<T>
+    operator/( T left, const Vector3<T>& right )
+    {
+        return Vector3<T>( left / right.x, left / right.y, left / right.z );
+    }
+
+    constexpr friend Vector3<T>&
+    operator/=( T left, const Vector3<T>& right )
+    {
+        return left / right;
     }
 
     constexpr friend bool
@@ -189,6 +207,28 @@ class Vector3 {
         return left.getLen() * right.getLen() * calcSin( left, right );
     }
 
+    constexpr friend Vector3
+    abs( const Vector3& vec )
+    {
+        return { std::abs( vec.x ), std::abs( vec.y ), std::abs( vec.z ) };
+    }
+
+    constexpr friend Vector3
+    sign( const Vector3& v )
+    {
+        return { static_cast<T>( v.x > 0.0f ) - static_cast<T>( v.x < 0.0f ),
+                 static_cast<T>( v.y > 0.0f ) - static_cast<T>( v.y < 0.0f ),
+                 static_cast<T>( v.z > 0.0f ) - static_cast<T>( v.z < 0.0f ) };
+    }
+
+    constexpr friend Vector3
+    step( const Vector3& edge, const Vector3& x )
+    {
+        return { ( x.x >= edge.x ) ? 1.0f : 0.0f,
+                 ( x.y >= edge.y ) ? 1.0f : 0.0f,
+                 ( x.z >= edge.z ) ? 1.0f : 0.0f };
+    }
+
     constexpr float
     getLenSq() const
     {
@@ -215,7 +255,7 @@ class Vector3 {
     constexpr Vector3<T>
     calcReflected( const Vector3<T>& normal ) const
     {
-        return *this + normal * 2;
+        return *this - normal * ( 2.0 * scalarMul( *this, normal ) );
     }
 
     static const Vector3<T> Nan;

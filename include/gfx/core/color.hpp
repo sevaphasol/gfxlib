@@ -19,6 +19,17 @@ class Color {
 
     constexpr Color( unsigned char factor ) : r( factor ), g( factor ), b( factor ), a( 255 ) {}
 
+    Color
+    operator=( const Color& that )
+    {
+        this->r = that.r;
+        this->g = that.g;
+        this->b = that.b;
+        this->a = that.a;
+
+        return *this;
+    }
+
     static const Color White;
     static const Color Black;
     static const Color Red;
