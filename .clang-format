@@ -12,6 +12,7 @@ SpacesInParentheses: true
 PointerAlignment: Left
 ReferenceAlignment: Pointer
 MaxEmptyLinesToKeep: 1
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
 
 IndentCaseLabels: true
 IndentCaseBlocks: true

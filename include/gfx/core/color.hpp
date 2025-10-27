@@ -19,7 +19,7 @@ class Color {
 
     constexpr Color( unsigned char factor ) : r( factor ), g( factor ), b( factor ), a( 255 ) {}
 
-    Color
+    Color&
     operator=( const Color& that )
     {
         this->r = that.r;
