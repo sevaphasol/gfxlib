@@ -5,7 +5,9 @@
 #include "gfx/core/vector2.hpp"
 #include "gfx/core/vertex.hpp"
 #include "gfx/core/window.hpp"
+#include "gfx/ui/event.hpp"
 #include "gfx/ui/widget.hpp"
+#include "gfx/ui/widget_container.hpp"
 
 #include "gfx/ui/scrollbar.hpp"
 
@@ -100,6 +102,8 @@ struct ScrollBar
 Thumb::Thumb( ScrollBar* owner, const gfx::core::Vector2f& pos, const gfx::core::Vector2f& size )
     : gfx::ui::Widget( pos, size ), owner_( owner )
 {
+    parent_ = owner;
+
     setDraggable( true );
 
     rect_.setSize( size );
@@ -107,7 +111,7 @@ Thumb::Thumb( ScrollBar* owner, const gfx::core::Vector2f& pos, const gfx::core:
 }
 
 bool
-Thumb::onIdleSelf( const gfx::core::Event::IdleEvent& event )
+Thumb::onIdle( const Event& event )
 {
     updateVisuals();
 
@@ -115,13 +119,15 @@ Thumb::onIdleSelf( const gfx::core::Event::IdleEvent& event )
 }
 
 bool
-Thumb::onMousePressSelf( const gfx::core::Event::MouseButtonEvent& event )
+Thumb::onMousePress( const Event& event )
 {
-    if ( isHoveredSelf() && event.button == gfx::core::Mouse::Left )
+    // std::cerr << __PRETTY_FUNCTION__ << std::endl;
+
+    if ( is_hovered_ && event.info.mouse_button.button == gfx::core::Mouse::Left )
     {
         is_pressed_  = true;
         is_dragging_ = true;
-        gfx::core::Vector2f mouse_pos( event.x, event.y );
+        gfx::core::Vector2f mouse_pos( event.info.mouse_button.x, event.info.mouse_button.y );
         drag_offset_ = mouse_pos - getAbsPos();
 
         return true;
@@ -131,12 +137,14 @@ Thumb::onMousePressSelf( const gfx::core::Event::MouseButtonEvent& event )
 }
 
 bool
-Thumb::onMouseMoveSelf( const gfx::core::Event::MouseMoveEvent& event )
+Thumb::onMouseMove( const Event& event )
 {
-    gfx::core::Vector2f mouse_pos( event.x, event.y );
-    is_hovered_self_ = pointInside( mouse_pos );
+    // std::cerr << __PRETTY_FUNCTION__ << std::endl;
 
-    if ( !is_hovered_self_ )
+    gfx::core::Vector2f mouse_pos( event.info.mouse_move.x, event.info.mouse_move.y );
+    is_hovered_ = pointInside( mouse_pos );
+
+    if ( !is_hovered_ )
     {
         is_pressed_ = false;
     }
@@ -147,13 +155,15 @@ Thumb::onMouseMoveSelf( const gfx::core::Event::MouseMoveEvent& event )
         owner_->onThumbMove( new_pos.y - getRelPos().y );
     }
 
-    return is_hovered_self_;
+    return is_hovered_;
 }
 
 bool
-Thumb::onMouseReleaseSelf( const gfx::core::Event::MouseButtonEvent& event )
+Thumb::onMouseRelease( const Event& event )
 {
-    return Widget::onMouseReleaseSelf( event );
+    // std::cerr << __PRETTY_FUNCTION__ << std::endl;
+
+    return Widget::onMouseRelease( event );
 }
 
 void
@@ -162,7 +172,7 @@ Thumb::updateVisuals()
     if ( is_pressed_ )
     {
         rect_.setFillColor( detail::ScrollBar::Thumb::Color::Pressed );
-    } else if ( isHoveredSelf() )
+    } else if ( is_hovered_ )
     {
         rect_.setFillColor( detail::ScrollBar::Thumb::Color::Hover );
     } else
@@ -172,9 +182,10 @@ Thumb::updateVisuals()
 }
 
 void
-Thumb::drawSelf( gfx::core::Window& window, gfx::core::Transform transform ) const
+Thumb::draw( gfx::core::Window& window, gfx::core::Transform transform ) const
 {
-    window.draw( rect_, transform );
+    core::Transform widget_transform = transform.combine( getTransform() );
+    window.draw( rect_, widget_transform );
 }
 
 Arrow::Arrow( ScrollBar*                 owner,
@@ -183,6 +194,8 @@ Arrow::Arrow( ScrollBar*                 owner,
               bool                       is_up )
     : gfx::ui::Widget( pos, size ), is_up_( is_up ), owner_( owner )
 {
+    parent_ = owner;
+
     rect_.setSize( size );
     rect_.setFillColor( detail::ScrollBar::ArrowField::Color::Default );
 
@@ -190,7 +203,7 @@ Arrow::Arrow( ScrollBar*                 owner,
 }
 
 bool
-Arrow::onIdleSelf( const gfx::core::Event::IdleEvent& event )
+Arrow::onIdle( const Event& event )
 {
     updateVisuals();
 
@@ -205,9 +218,11 @@ Arrow::setUpTriangle()
 }
 
 bool
-Arrow::onMousePressSelf( const gfx::core::Event::MouseButtonEvent& event )
+Arrow::onMousePress( const Event& event )
 {
-    if ( isHoveredSelf() && event.button == gfx::core::Mouse::Left )
+    // std::cerr << __PRETTY_FUNCTION__ << std::endl;
+
+    if ( is_hovered_ && event.info.mouse_button.button == gfx::core::Mouse::Left )
     {
         is_pressed_ = true;
 
@@ -219,15 +234,40 @@ Arrow::onMousePressSelf( const gfx::core::Event::MouseButtonEvent& event )
 }
 
 bool
-Arrow::onMouseMoveSelf( const gfx::core::Event::MouseMoveEvent& event )
+Arrow::onMouseMove( const Event& event )
 {
-    return Widget::onMouseMoveSelf( event );
+    // std::cerr << __PRETTY_FUNCTION__ << std::endl;
+
+    // std::cerr << event.info.mouse_move.x << " " << event.info.mouse_move.y << std::endl;
+    // std::cerr << getPosition().x << " " << getPosition().y << std::endl;
+
+    core::Vector2f mouse_pos( event.info.mouse_move.x, event.info.mouse_move.y );
+    is_hovered_ = pointInside( mouse_pos );
+
+    // std::cerr << is_hovered_ << std::endl;
+
+    if ( !is_hovered_ )
+    {
+        is_pressed_ = false;
+    }
+
+    if ( is_dragging_ )
+    {
+        setRelPos( mouse_pos - drag_offset_ - getParentAbsPos() );
+        return true;
+    }
+
+    return is_hovered_;
+
+    return Widget::onMouseMove( event );
 }
 
 bool
-Arrow::onMouseReleaseSelf( const gfx::core::Event::MouseButtonEvent& event )
+Arrow::onMouseRelease( const Event& event )
 {
-    return Widget::onMouseReleaseSelf( event );
+    // std::cerr << __PRETTY_FUNCTION__ << std::endl;
+
+    return Widget::onMouseRelease( event );
 }
 
 void
@@ -262,7 +302,7 @@ Arrow::updateVisuals()
     {
         rect_.setFillColor( detail::ScrollBar::ArrowField::Color::Pressed );
         updateTriangleColor( detail::ScrollBar::ArrowField::Triangle::Color::Pressed );
-    } else if ( isHoveredSelf() )
+    } else if ( is_hovered_ )
     {
         rect_.setFillColor( detail::ScrollBar::ArrowField::Color::Hover );
         updateTriangleColor( detail::ScrollBar::ArrowField::Triangle::Color::Hover );
@@ -274,36 +314,65 @@ Arrow::updateVisuals()
 }
 
 void
-Arrow::drawSelf( gfx::core::Window& window, gfx::core::Transform transform ) const
+Arrow::draw( gfx::core::Window& window, gfx::core::Transform transform ) const
 {
-    window.draw( rect_, transform );
-    window.draw( triangle_, 3, gfx::core::PrimitiveType::Triangles, transform );
+    core::Transform widget_transform = transform.combine( getTransform() );
+
+    window.draw( rect_, widget_transform );
+    window.draw( triangle_, 3, gfx::core::PrimitiveType::Triangles, widget_transform );
 }
 
 ScrollBar::ScrollBar( const gfx::core::Vector2f& pos )
-    : gfx::ui::Widget( pos, detail::ScrollBar::Size ),
-      thumb_size_( detail::ScrollBar::Size.x,
-                   detail::ScrollBar::Size.y * detail::ScrollBar::Thumb::SizeCoef ),
-      arrow_size_( detail::ScrollBar::Size.x,
-                   detail::ScrollBar::Size.y * detail::ScrollBar::ArrowField::SizeCoef )
-
+    : gfx::ui::WidgetContainer( pos, detail::ScrollBar::Size ),
+      thumb_( this,
+              detail::ScrollBar::Thumb::StartPos,
+              core::Vector2f( detail::ScrollBar::Size.x,
+                              detail::ScrollBar::Size.y * detail::ScrollBar::Thumb::SizeCoef ) ),
+      up_arrow_(
+          this,
+          gfx::core::Vector2f( 0.0f, 0.0f ),
+          core::Vector2f( detail::ScrollBar::Size.x,
+                          detail::ScrollBar::Size.y * detail::ScrollBar::ArrowField::SizeCoef ),
+          true ),
+      down_arrow_(
+          this,
+          gfx::core::Vector2f( 0.0f,
+                               detail::ScrollBar::Size.y *
+                                   ( 1 - detail::ScrollBar::ArrowField::SizeCoef ) ),
+          core::Vector2f( detail::ScrollBar::Size.x,
+                          detail::ScrollBar::Size.y * detail::ScrollBar::ArrowField::SizeCoef ),
+          false )
 {
-    addChild(
-        std::make_unique<ui::Thumb>( this, detail::ScrollBar::Thumb::StartPos, thumb_size_ ) );
-    addChild(
-        std::make_unique<ui::Arrow>( this, gfx::core::Vector2f( 0.0f, 0.0f ), arrow_size_, true ) );
-    addChild( std::make_unique<ui::Arrow>(
-        this,
-        gfx::core::Vector2f( 0.0f,
-                             detail::ScrollBar::Size.y *
-                                 ( 1 - detail::ScrollBar::ArrowField::SizeCoef ) ),
-        arrow_size_,
-        false ) );
-
     border_.setSize( getSize() );
     border_.setFillColor( gfx::core::Color( 64, 64, 64, 128 ) );
     border_.setOutlineColor( gfx::core::Color( 32, 32, 32 ) );
     border_.setOutlineThickness( 4.0f );
+}
+
+void
+ScrollBar::bringToFront( Widget* child )
+{
+}
+
+bool
+ScrollBar::propagateEventToChildren( const Event& event )
+{
+    if ( event.apply( &thumb_ ) )
+    {
+        return true;
+    }
+
+    if ( event.apply( &up_arrow_ ) )
+    {
+        return true;
+    }
+
+    if ( event.apply( &down_arrow_ ) )
+    {
+        return true;
+    }
+
+    return false;
 }
 
 double
@@ -327,14 +396,17 @@ ScrollBar::isScrolled()
 gfx::core::Vector2f
 ScrollBar::clampThumbPosition( const gfx::core::Vector2f& vector )
 {
-    return { std::clamp( vector.x, 0.0f, size_.x - thumb_size_.x ),
-             std::clamp( vector.y, arrow_size_.y, size_.y - thumb_size_.y - arrow_size_.y ) };
+    return { std::clamp( vector.x, 0.0f, size_.x - thumb_.getSize().x ),
+             std::clamp( vector.y,
+                         up_arrow_.getSize().y,
+                         size_.y - thumb_.getSize().y - up_arrow_.getSize().y ) };
 }
 
 void
 ScrollBar::onThumbMove( float vertical_delta )
 {
-    float norm_delta = vertical_delta / ( size_.y - thumb_size_.y - 2 * arrow_size_.y );
+    float norm_delta =
+        vertical_delta / ( size_.y - thumb_.getSize().y - 2 * up_arrow_.getSize().y );
 
     scroll_factor_ = std::clamp( scroll_factor_ - norm_delta, 0.0, 1.0 );
 
@@ -357,15 +429,21 @@ void
 ScrollBar::updateThumbPosition()
 {
     float thumb_y =
-        arrow_size_.y + ( 1 - scroll_factor_ ) * ( size_.y - thumb_size_.y - 2 * arrow_size_.y );
+        up_arrow_.getSize().y +
+        ( 1 - scroll_factor_ ) * ( size_.y - thumb_.getSize().y - 2 * up_arrow_.getSize().y );
 
-    children_[PartCode::Thumb]->setRelPos( gfx::core::Vector2f( 0.0, thumb_y ) );
+    thumb_.setRelPos( gfx::core::Vector2f( 0.0, thumb_y ) );
 }
 
 void
-ScrollBar::drawSelf( gfx::core::Window& window, gfx::core::Transform transform ) const
+ScrollBar::draw( gfx::core::Window& window, gfx::core::Transform transform ) const
 {
-    window.draw( border_, transform );
+    core::Transform widget_transform = transform.combine( getTransform() );
+
+    window.draw( border_, widget_transform );
+    window.draw( thumb_, widget_transform );
+    window.draw( up_arrow_, widget_transform );
+    window.draw( down_arrow_, widget_transform );
 }
 
 } // namespace ui

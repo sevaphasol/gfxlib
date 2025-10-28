@@ -6,6 +6,7 @@
 #include "gfx/ui/widget.hpp"
 #include <cstdio>
 #include "gfx/ui/button.hpp"
+#include <iostream>
 
 namespace gfx {
 namespace ui {
@@ -72,15 +73,15 @@ Button::isPressed() const
 }
 
 bool
-Button::onIdleSelf( const gfx::core::Event::IdleEvent& event )
+Button::onIdle( const Event& event )
 {
     return false;
 }
 
 bool
-Button::onMousePressSelf( const gfx::core::Event::MouseButtonEvent& event )
+Button::onMousePress( const Event& event )
 {
-    if ( isHoveredSelf() && event.button == gfx::core::Mouse::Left )
+    if ( is_hovered_ && event.info.mouse_button.button == gfx::core::Mouse::Left )
     {
         is_pressed_ = true;
         updateVisuals();
@@ -91,26 +92,33 @@ Button::onMousePressSelf( const gfx::core::Event::MouseButtonEvent& event )
 }
 
 bool
-Button::onMouseReleaseSelf( const gfx::core::Event::MouseButtonEvent& event )
+Button::onMouseRelease( const Event& event )
 {
     is_pressed_ = false;
     updateVisuals();
-    return isHoveredSelf();
+    return is_hovered_;
 }
 
 bool
-Button::onMouseMoveSelf( const gfx::core::Event::MouseMoveEvent& event )
+Button::onMouseMove( const Event& event )
 {
-    is_hovered_self_ = pointInside( gfx::core::Vector2f( event.x, event.y ) );
+    // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
 
-    if ( !is_hovered_self_ )
+    is_hovered_ =
+        pointInside( gfx::core::Vector2f( event.info.mouse_move.x, event.info.mouse_move.y ) );
+
+    // // std::cerr << event.info.mouse_move.x << " " << event.info.mouse_move.y << std::endl;
+    // // std::cerr << getPosition().x << " " << getPosition().y << std::endl;
+    // // std::cerr << is_hovered_ << std::endl;
+
+    if ( !is_hovered_ )
     {
         is_pressed_ = false;
     }
 
     updateVisuals();
 
-    return isHoveredSelf();
+    return is_hovered_;
 }
 
 void
@@ -119,7 +127,7 @@ Button::updateVisuals()
     if ( is_pressed_ )
     {
         background_.setFillColor( pressed_color_ );
-    } else if ( is_hovered_self_ )
+    } else if ( is_hovered_ )
     {
         background_.setFillColor( hovered_color_ );
     } else
@@ -129,10 +137,12 @@ Button::updateVisuals()
 }
 
 void
-Button::drawSelf( gfx::core::Window& window, gfx::core::Transform transform ) const
+Button::draw( gfx::core::Window& window, gfx::core::Transform transform ) const
 {
-    window.draw( background_, transform );
-    window.draw( label_, transform );
+    core::Transform widget_transform = transform.combine( getTransform() );
+
+    window.draw( background_, widget_transform );
+    window.draw( label_, widget_transform );
 }
 
 } // namespace ui

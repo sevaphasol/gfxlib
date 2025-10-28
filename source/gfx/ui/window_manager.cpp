@@ -1,4 +1,5 @@
 #include "gfx/core/event.hpp"
+#include "gfx/ui/event.hpp"
 #include "gfx/ui/window_manager.hpp"
 
 namespace gfx {
@@ -47,35 +48,37 @@ WindowManager::setDeltaTime( float delta_time )
 void
 WindowManager::handleEvents()
 {
-    core::Event event;
-    while ( window_.pollEvent( event ) )
+    core::Event core_event;
+    while ( window_.pollEvent( core_event ) )
     {
-        switch ( event.type )
+        switch ( core_event.type )
         {
             case core::Event::Closed:
                 window_.close();
                 break;
             case core::Event::KeyPressed:
-                desktop_.onKeyPress( event.key );
+                ui::KeyPressEvent( core_event ).apply( &desktop_ );
                 break;
             case core::Event::KeyReleased:
-                desktop_.onKeyRelease( event.key );
+                ui::KeyReleaseEvent( core_event ).apply( &desktop_ );
                 break;
             case core::Event::MouseButtonPressed:
-                desktop_.onMousePress( event.mouse_button );
+                ui::MousePressEvent( core_event ).apply( &desktop_ );
                 break;
             case core::Event::MouseButtonReleased:
-                desktop_.onMouseRelease( event.mouse_button );
+                ui::MouseReleaseEvent( core_event ).apply( &desktop_ );
                 break;
             case core::Event::MouseMoved:
-                desktop_.onMouseMove( event.mouse_move );
+                ui::MouseMoveEvent( core_event ).apply( &desktop_ );
                 break;
             default:
                 break;
         }
     }
 
-    desktop_.onIdle( core::Event::generateIdleEvent( delta_time_ ) );
+    core_event.idle = core::Event::generateIdleEvent( delta_time_ );
+
+    ui::IdleEvent( core_event ).apply( &desktop_ );
 }
 
 void

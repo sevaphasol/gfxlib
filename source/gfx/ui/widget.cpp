@@ -3,6 +3,7 @@
 #include "gfx/core/mouse.hpp"
 #include "gfx/core/vector2.hpp"
 #include "gfx/core/window.hpp"
+#include "gfx/ui/widget_container.hpp"
 
 namespace gfx {
 namespace ui {
@@ -12,18 +13,6 @@ Widget::Widget( float x, float y, float w, float h ) : size_( w, h ) { setPositi
 Widget::Widget( const core::Vector2f& pos, const core::Vector2f& size ) : size_( size )
 {
     setRelPos( pos );
-}
-
-bool
-Widget::isHoveredSelf() const
-{
-    return is_hovered_self_;
-}
-
-bool
-Widget::isHoveredChildren() const
-{
-    return is_hovered_children_;
 }
 
 bool
@@ -38,147 +27,43 @@ Widget::setDraggable( bool state )
     is_draggable_ = state;
 }
 
-void
-Widget::bringToFront( Widget* child )
-{
-    for ( auto it = children_.begin(); it != children_.end(); ++it )
-    {
-        if ( it->get() == child )
-        {
-            auto tmp = std::move( *it );
-            children_.erase( it );
-            children_.push_back( std::move( tmp ) );
-            break;
-        }
-    }
-}
-
 bool
-Widget::onIdle( const core::Event::IdleEvent& event )
-{
-    if ( onIdleChildren( event ) )
-    {
-        return true;
-    }
-
-    return onIdleSelf( event );
-}
-
-bool
-Widget::onIdleSelf( const core::Event::IdleEvent& event )
+Widget::onIdle( const Event& event )
 {
     return false;
 }
 
 bool
-Widget::onIdleChildren( const core::Event::IdleEvent& event )
-{
-    for ( auto it = children_.rbegin(); it != children_.rend(); ++it )
-    {
-        if ( ( *it )->onIdle( event ) )
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool
-Widget::onKeyPress( const core::Event::KeyEvent& event )
-{
-    if ( onKeyPressChildren( event ) )
-    {
-        return true;
-    }
-
-    return onKeyPressSelf( event );
-}
-
-bool
-Widget::onKeyPressSelf( const core::Event::KeyEvent& event )
+Widget::onKeyPress( const Event& event )
 {
     return false;
 }
 
 bool
-Widget::onKeyPressChildren( const core::Event::KeyEvent& event )
-{
-    for ( auto it = children_.rbegin(); it != children_.rend(); ++it )
-    {
-        if ( ( *it )->onKeyPress( event ) )
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool
-Widget::onKeyRelease( const core::Event::KeyEvent& event )
-{
-    if ( onKeyReleaseChildren( event ) )
-    {
-        return true;
-    }
-
-    return onKeyReleaseSelf( event );
-}
-
-bool
-Widget::onKeyReleaseSelf( const core::Event::KeyEvent& event )
+Widget::onKeyRelease( const Event& event )
 {
     return false;
 }
 
 bool
-Widget::onKeyReleaseChildren( const core::Event::KeyEvent& event )
+Widget::onMousePress( const Event& event )
 {
-    for ( auto it = children_.rbegin(); it != children_.rend(); ++it )
-    {
-        if ( ( *it )->onKeyRelease( event ) )
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool
-Widget::onMousePress( const core::Event::MouseButtonEvent& event )
-{
-    // if ( !is_hovered_self_ && !is_hovered_children_ )
-    // {
-    //     return false;
-    // }
-
-    if ( onMousePressChildren( event ) )
-    {
-        return true;
-    }
-
-    return onMousePressSelf( event );
-}
-
-bool
-Widget::onMousePressSelf( const core::Event::MouseButtonEvent& event )
-{
-    if ( event.button == core::Mouse::Left && is_hovered_self_ )
+    if ( event.info.mouse_button.button == core::Mouse::Left && is_hovered_ )
     {
         is_pressed_ = true;
 
-        if ( parent_ != nullptr )
+        WidgetContainer* parent_container = dynamic_cast<WidgetContainer*>( parent_ );
+
+        if ( parent_container != nullptr )
         {
-            parent_->bringToFront( this );
+            parent_container->bringToFront( this );
         }
 
         if ( is_draggable_ )
         {
             is_dragging_ = true;
 
-            core::Vector2f mouse_pos( event.x, event.y );
+            core::Vector2f mouse_pos( event.info.mouse_button.x, event.info.mouse_button.y );
             drag_offset_ = mouse_pos - getAbsPos();
         }
 
@@ -189,41 +74,11 @@ Widget::onMousePressSelf( const core::Event::MouseButtonEvent& event )
 }
 
 bool
-Widget::onMousePressChildren( const core::Event::MouseButtonEvent& event )
-{
-    for ( auto it = children_.rbegin(); it != children_.rend(); ++it )
-    {
-        if ( ( *it )->onMousePress( event ) )
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool
-Widget::onMouseRelease( const core::Event::MouseButtonEvent& event )
-{
-    // if ( !is_hovered_self_ && !is_hovered_children_ )
-    // {
-    //     return false;
-    // }
-
-    if ( onMouseReleaseChildren( event ) )
-    {
-        return true;
-    }
-
-    return onMouseReleaseSelf( event );
-}
-
-bool
-Widget::onMouseReleaseSelf( const core::Event::MouseButtonEvent& event )
+Widget::onMouseRelease( const Event& event )
 {
     is_pressed_ = false;
 
-    if ( is_dragging_ && event.button == core::Mouse::Left )
+    if ( is_dragging_ && event.info.mouse_button.button == core::Mouse::Left )
     {
         is_dragging_ = false;
         return true;
@@ -233,37 +88,13 @@ Widget::onMouseReleaseSelf( const core::Event::MouseButtonEvent& event )
 }
 
 bool
-Widget::onMouseReleaseChildren( const core::Event::MouseButtonEvent& event )
+Widget::onMouseMove( const Event& event )
 {
-    for ( auto it = children_.rbegin(); it != children_.rend(); ++it )
-    {
-        if ( ( *it )->onMouseRelease( event ) )
-        {
-            return true;
-        }
-    }
 
-    return false;
-}
+    core::Vector2f mouse_pos( event.info.mouse_move.x, event.info.mouse_move.y );
+    is_hovered_ = pointInside( mouse_pos );
 
-bool
-Widget::onMouseMove( const core::Event::MouseMoveEvent& event )
-{
-    if ( onMouseMoveChildren( event ) )
-    {
-        return true;
-    }
-
-    return onMouseMoveSelf( event );
-}
-
-bool
-Widget::onMouseMoveSelf( const core::Event::MouseMoveEvent& event )
-{
-    core::Vector2f mouse_pos( event.x, event.y );
-    is_hovered_self_ = pointInside( mouse_pos );
-
-    if ( !is_hovered_self_ )
+    if ( !is_hovered_ )
     {
         is_pressed_ = false;
     }
@@ -274,22 +105,7 @@ Widget::onMouseMoveSelf( const core::Event::MouseMoveEvent& event )
         return true;
     }
 
-    return is_hovered_self_;
-}
-
-bool
-Widget::onMouseMoveChildren( const core::Event::MouseMoveEvent& event )
-{
-    for ( auto it = children_.rbegin(); it != children_.rend(); ++it )
-    {
-        if ( ( *it )->onMouseMove( event ) )
-        {
-            is_hovered_children_ = true;
-            return true;
-        }
-    }
-
-    return false;
+    return is_hovered_;
 }
 
 core::Vector2f
@@ -341,19 +157,6 @@ Widget::pointInside( const core::Vector2f& point ) const
              ( point.y >= abs_pos.y && point.y <= abs_pos.y + sz.y ) );
 }
 
-void
-Widget::addChild( std::unique_ptr<Widget> child )
-{
-    child->parent_ = this;
-    children_.push_back( std::move( child ) );
-}
-
-const std::vector<std::unique_ptr<Widget>>&
-Widget::getChildren() const
-{
-    return children_;
-}
-
 Widget*
 Widget::getParent()
 {
@@ -364,22 +167,6 @@ void
 Widget::draw( core::Window& window, core::Transform transform ) const
 {
     core::Transform widget_transform = transform.combine( getTransform() );
-    drawSelf( window, widget_transform );
-    drawChildren( window, widget_transform );
-}
-
-void
-Widget::drawSelf( core::Window& window, core::Transform transform ) const
-{
-}
-
-void
-Widget::drawChildren( core::Window& window, core::Transform transform ) const
-{
-    for ( const auto& child : children_ )
-    {
-        window.draw( *child, transform );
-    }
 }
 
 } // namespace ui

@@ -36,17 +36,17 @@ class Button : public gfx::ui::Widget {
     isPressed() const;
 
     bool
-    onIdleSelf( const gfx::core::Event::IdleEvent& event ) override;
+    onIdle( const Event& event ) override;
 
   private:
     bool
-    onMousePressSelf( const gfx::core::Event::MouseButtonEvent& event ) override;
+    onMousePress( const Event& event ) override;
     bool
-    onMouseReleaseSelf( const gfx::core::Event::MouseButtonEvent& event ) override;
+    onMouseRelease( const Event& event ) override;
     bool
-    onMouseMoveSelf( const gfx::core::Event::MouseMoveEvent& event ) override;
+    onMouseMove( const Event& event ) override;
     void
-    drawSelf( gfx::core::Window& window, gfx::core::Transform transform ) const override;
+    draw( gfx::core::Window& window, gfx::core::Transform transform ) const override;
     void
     updateVisuals();
 

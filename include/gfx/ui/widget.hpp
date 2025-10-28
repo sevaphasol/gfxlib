@@ -1,7 +1,7 @@
 #pragma once
 
 #include "gfx/core/drawable.hpp"
-#include "gfx/core/event.hpp"
+#include "gfx/ui/event.hpp"
 #include "gfx/core/transformable.hpp"
 #include "gfx/core/vector2.hpp"
 
@@ -18,65 +18,23 @@ class Widget : public core::Drawable, public core::Transformable {
                      const core::Vector2f& size = { 0.0f, 0.0f } );
     virtual ~Widget() = default;
 
-    bool
-    onIdle( const core::Event::IdleEvent& event );
-    virtual bool
-    onIdleSelf( const core::Event::IdleEvent& event );
-    virtual bool
-    onIdleChildren( const core::Event::IdleEvent& event );
+    // clang-format off
+    virtual bool onIdle   		( const Event& event );
+    virtual bool onKeyPress     ( const Event& event );
+    virtual bool onKeyRelease   ( const Event& event );
+    virtual bool onMousePress   ( const Event& event );
+    virtual bool onMouseRelease ( const Event& event );
+    virtual bool onMouseMove    ( const Event& event );
+    // clang-format on
 
     bool
-    onKeyPress( const core::Event::KeyEvent& event );
-    virtual bool
-    onKeyPressSelf( const core::Event::KeyEvent& event );
-    virtual bool
-    onKeyPressChildren( const core::Event::KeyEvent& event );
-
-    bool
-    onKeyRelease( const core::Event::KeyEvent& event );
-    virtual bool
-    onKeyReleaseSelf( const core::Event::KeyEvent& event );
-    virtual bool
-    onKeyReleaseChildren( const core::Event::KeyEvent& event );
-
-    bool
-    onMousePress( const core::Event::MouseButtonEvent& event );
-    virtual bool
-    onMousePressSelf( const core::Event::MouseButtonEvent& event );
-    virtual bool
-    onMousePressChildren( const core::Event::MouseButtonEvent& event );
-
-    bool
-    onMouseRelease( const core::Event::MouseButtonEvent& event );
-    virtual bool
-    onMouseReleaseSelf( const core::Event::MouseButtonEvent& event );
-    virtual bool
-    onMouseReleaseChildren( const core::Event::MouseButtonEvent& event );
-
-    bool
-    onMouseMove( const core::Event::MouseMoveEvent& event );
-    virtual bool
-    onMouseMoveSelf( const core::Event::MouseMoveEvent& event );
-    virtual bool
-    onMouseMoveChildren( const core::Event::MouseMoveEvent& event );
-
-    void
-    bringToFront( Widget* child );
-
-    bool
-    isHoveredSelf() const;
-    bool
-    isHoveredChildren() const;
+    isHovered() const;
 
     bool
     isDraggable() const;
     void
     setDraggable( bool state );
 
-    void
-    addChild( std::unique_ptr<Widget> child );
-    const std::vector<std::unique_ptr<Widget>>&
-    getChildren() const;
     Widget*
     getParent();
 
@@ -97,17 +55,11 @@ class Widget : public core::Drawable, public core::Transformable {
 
     void
     draw( core::Window& window, core::Transform transform ) const override;
-    virtual void
-    drawSelf( core::Window& window, core::Transform transform ) const;
-    virtual void
-    drawChildren( core::Window& window, core::Transform transform ) const;
+
+    Widget* parent_ = nullptr;
 
   protected:
     core::Vector2f size_;
-
-    std::vector<std::unique_ptr<Widget>> children_;
-
-    Widget* parent_ = nullptr;
 
     bool is_pressed_ = false;
 
@@ -115,8 +67,7 @@ class Widget : public core::Drawable, public core::Transformable {
     bool           is_dragging_  = false;
     core::Vector2f drag_offset_  = { 0.0f, 0.0f };
 
-    bool is_hovered_self_     = false;
-    bool is_hovered_children_ = false;
+    bool is_hovered_ = false;
 };
 
 } // namespace ui

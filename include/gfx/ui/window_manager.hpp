@@ -2,6 +2,7 @@
 #include "gfx/core/color.hpp"
 #include "gfx/core/window.hpp"
 #include "gfx/ui/widget.hpp"
+#include "gfx/ui/widget_container.hpp"
 #include <memory>
 
 namespace gfx {
@@ -34,10 +35,10 @@ class WindowManager {
     draw();
 
   private:
-    core::Window     window_;
-    Widget           desktop_;
-    gfx::core::Color background_color_;
-    float            delta_time_ = 0.0f;
+    core::Window          window_;
+    WidgetVectorContainer desktop_;
+    gfx::core::Color      background_color_;
+    float                 delta_time_ = 0.0f;
 };
 
 } // namespace ui
