@@ -4,7 +4,7 @@
 #include "gfx/core/vector2.hpp"
 #include "gfx/core/window.hpp"
 #include "gfx/ui/widget.hpp"
-#include "gfx/ui/widget_container.hpp"
+#include "gfx/ui/container_widget.hpp"
 
 namespace gfx {
 namespace ui {
@@ -76,9 +76,10 @@ class Arrow : public gfx::ui::Widget {
     gfx::core::Vertex         triangle_[3];
 };
 
-class ScrollBar : public gfx::ui::WidgetContainer {
+class ScrollBar : public gfx::ui::ContainerWidget {
   public:
     ScrollBar( const gfx::core::Vector2f& pos );
+    ScrollBar( float x, float y );
 
     void
     bringToFront( Widget* child ) override;

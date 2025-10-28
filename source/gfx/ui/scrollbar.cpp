@@ -7,7 +7,7 @@
 #include "gfx/core/window.hpp"
 #include "gfx/ui/event.hpp"
 #include "gfx/ui/widget.hpp"
-#include "gfx/ui/widget_container.hpp"
+#include "gfx/ui/container_widget.hpp"
 
 #include "gfx/ui/scrollbar.hpp"
 
@@ -322,8 +322,10 @@ Arrow::draw( gfx::core::Window& window, gfx::core::Transform transform ) const
     window.draw( triangle_, 3, gfx::core::PrimitiveType::Triangles, widget_transform );
 }
 
+ScrollBar::ScrollBar( float x, float y ) : ScrollBar( gfx::core::Vector2f( x, y ) ) {}
+
 ScrollBar::ScrollBar( const gfx::core::Vector2f& pos )
-    : gfx::ui::WidgetContainer( pos, detail::ScrollBar::Size ),
+    : gfx::ui::ContainerWidget( pos, detail::ScrollBar::Size ),
       thumb_( this,
               detail::ScrollBar::Thumb::StartPos,
               core::Vector2f( detail::ScrollBar::Size.x,

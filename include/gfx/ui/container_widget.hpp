@@ -9,16 +9,18 @@
 namespace gfx {
 namespace ui {
 
-class WidgetContainer : public Widget {
+class ContainerWidget : public Widget {
   public:
-    explicit WidgetContainer( float x, float y, float w, float h ) : Widget( x, y, w, h ) {}
-    explicit WidgetContainer( const core::Vector2f& pos  = { 0.0f, 0.0f },
+    explicit ContainerWidget( float x, float y, float w, float h ) : Widget( x, y, w, h ) {}
+    explicit ContainerWidget( const core::Vector2f& pos  = { 0.0f, 0.0f },
                               const core::Vector2f& size = { 0.0f, 0.0f } )
         : Widget( pos, size ) {};
-    virtual ~WidgetContainer() = default;
+    virtual ~ContainerWidget() = default;
 
     virtual void
-    bringToFront( Widget* child ) = 0;
+    bringToFront( Widget* child )
+    {
+    }
 
     virtual bool
     propagateEventToChildren( const Event& event ) = 0;
@@ -90,16 +92,16 @@ class WidgetContainer : public Widget {
     }
 };
 
-class WidgetVectorContainer : public WidgetContainer {
+class VectorContainerWidget : public ContainerWidget {
   public:
-    explicit WidgetVectorContainer( float x, float y, float w, float h )
-        : WidgetContainer( x, y, w, h )
+    explicit VectorContainerWidget( float x, float y, float w, float h )
+        : ContainerWidget( x, y, w, h )
     {
     }
-    explicit WidgetVectorContainer( const core::Vector2f& pos  = { 0.0f, 0.0f },
+    explicit VectorContainerWidget( const core::Vector2f& pos  = { 0.0f, 0.0f },
                                     const core::Vector2f& size = { 0.0f, 0.0f } )
-        : WidgetContainer( pos, size ) {};
-    virtual ~WidgetVectorContainer() = default;
+        : ContainerWidget( pos, size ) {};
+    virtual ~VectorContainerWidget() = default;
 
     virtual bool
     onIdle( const Event& event ) override

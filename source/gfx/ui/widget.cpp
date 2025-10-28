@@ -3,12 +3,16 @@
 #include "gfx/core/mouse.hpp"
 #include "gfx/core/vector2.hpp"
 #include "gfx/core/window.hpp"
-#include "gfx/ui/widget_container.hpp"
+#include "gfx/ui/container_widget.hpp"
 
 namespace gfx {
 namespace ui {
 
-Widget::Widget( float x, float y, float w, float h ) : size_( w, h ) { setPosition( x, y ); }
+Widget::Widget( float x, float y, float w, float h ) : size_( w, h )
+{
+    setPosition( x, y );
+    setSize( size_ );
+}
 
 Widget::Widget( const core::Vector2f& pos, const core::Vector2f& size ) : size_( size )
 {
@@ -52,7 +56,7 @@ Widget::onMousePress( const Event& event )
     {
         is_pressed_ = true;
 
-        WidgetContainer* parent_container = dynamic_cast<WidgetContainer*>( parent_ );
+        ContainerWidget* parent_container = dynamic_cast<ContainerWidget*>( parent_ );
 
         if ( parent_container != nullptr )
         {

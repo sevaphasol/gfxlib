@@ -2,7 +2,7 @@
 #include "gfx/core/color.hpp"
 #include "gfx/core/window.hpp"
 #include "gfx/ui/widget.hpp"
-#include "gfx/ui/widget_container.hpp"
+#include "gfx/ui/container_widget.hpp"
 #include <memory>
 
 namespace gfx {
@@ -36,7 +36,7 @@ class WindowManager {
 
   private:
     core::Window          window_;
-    WidgetVectorContainer desktop_;
+    VectorContainerWidget desktop_;
     gfx::core::Color      background_color_;
     float                 delta_time_ = 0.0f;
 };
