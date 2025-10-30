@@ -22,7 +22,7 @@ namespace detail {
 
 struct ScrollBar
 {
-    static inline const gfx::core::Vector2f Size = { 15.0f, 100.0f };
+    static inline const gfx::core::Vector2f Size = { 15.0f, 110.0f };
 
     struct ArrowField
     {

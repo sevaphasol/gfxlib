@@ -13,6 +13,7 @@
 #include <cmath>
 #include <iostream>
 #include <limits>
+#include <optional>
 #include <stdexcept>
 
 namespace gfx {
@@ -68,23 +69,38 @@ class Cursor : public Widget {
 
 class TextField : public ContainerWidget {
   public:
-    TextField( const core::Font& font, float x, float y, float w, float h )
+    TextField( const std::string& label,
+               const core::Font&  font,
+               float              x,
+               float              y,
+               float              w,
+               float              h )
         : ContainerWidget( x, y, w, h ), cursor_( 1.0f, h * 0.8 )
     {
+        label_.setCharacterSize( 12 );
+        label_.setFillColor( core::Color::White );
+        label_.setFont( font );
+        label_.setString( label );
+
         text_.setCharacterSize( 12 );
         text_.setFillColor( core::Color::White );
         text_.setFont( font );
+        text_.setPosition( 1.8 * label_.getLocalBounds().w, h * 0.1f );
 
         border_.setFillColor( core::Color::Transparent );
         border_.setOutlineColor( core::Color::White );
         border_.setOutlineThickness( 1.0f );
-        border_.setSize( w, h );
+        border_.setSize( w - 1.05 * label_.getLocalBounds().w, h );
+        border_.setPosition( 1.75 * label_.getLocalBounds().w, 0 );
 
-        cursor_.setPosition( 2.0f, h * 0.1f );
+        cursor_.setPosition( 1.9 * label_.getLocalBounds().w, h * 0.1f );
     }
 
-    TextField( const core::Font& font, const core::Vector2f& pos, const core::Vector2f& size )
-        : TextField( font, pos.x, pos.y, size.x, size.y )
+    TextField( const std::string&    label,
+               const core::Font&     font,
+               const core::Vector2f& pos,
+               const core::Vector2f& size )
+        : TextField( label, font, pos.x, pos.y, size.x, size.y )
     {
     }
 
@@ -168,7 +184,7 @@ class TextField : public ContainerWidget {
             }
         } else
         {
-            if ( old_w >= getSize().x )
+            if ( old_w >= 0.8 * border_.getSize().x )
             {
                 return true;
             }
@@ -186,7 +202,7 @@ class TextField : public ContainerWidget {
         return true;
     }
 
-    double
+    std::optional<double>
     strToDouble()
     {
         try
@@ -194,10 +210,25 @@ class TextField : public ContainerWidget {
             return std::stod( str_ );
         } catch ( const std::invalid_argument& e )
         {
-            return std::numeric_limits<double>::quiet_NaN();
+            return std::nullopt;
         } catch ( const std::out_of_range& e )
         {
-            return std::numeric_limits<double>::quiet_NaN();
+            return std::nullopt;
+        }
+    }
+
+    std::optional<uint32_t>
+    strToUint32()
+    {
+        try
+        {
+            return std::stoul( str_ );
+        } catch ( const std::invalid_argument& e )
+        {
+            return std::nullopt;
+        } catch ( const std::out_of_range& e )
+        {
+            return std::nullopt;
         }
     }
 
@@ -209,6 +240,7 @@ class TextField : public ContainerWidget {
 
         transform = transform.combine( getTransform() );
 
+        window.draw( label_, transform );
         window.draw( text_, transform );
         window.draw( cursor_, transform );
         window.draw( border_, transform );
@@ -216,6 +248,8 @@ class TextField : public ContainerWidget {
 
   private:
     bool is_focused_;
+
+    core::Text label_;
 
     Cursor               cursor_;
     core::RectangleShape border_;
