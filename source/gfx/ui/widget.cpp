@@ -14,9 +14,9 @@ Widget::Widget( float x, float y, float w, float h ) : size_( w, h )
     setSize( size_ );
 }
 
-Widget::Widget( const core::Vector2f& pos, const core::Vector2f& size ) : size_( size )
+Widget::Widget( const core::Vector2f& pos, const core::Vector2f& size )
+    : Widget( pos.x, pos.y, size.x, size.y )
 {
-    setRelPos( pos );
 }
 
 bool
@@ -41,6 +41,12 @@ bool
 Widget::isHovered() const
 {
     return is_hovered_;
+}
+
+bool
+Widget::onTextEnter( const Event& event )
+{
+    return false;
 }
 
 bool

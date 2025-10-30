@@ -2,12 +2,18 @@
 
 #include "gfx/core/mouse.hpp"
 #include "gfx/core/keyboard.hpp"
+#include <cstdint>
 
 namespace gfx {
 namespace core {
 
 class Event {
   public:
+    struct TextEvent
+    {
+        uint32_t unicode;
+    };
+
     struct KeyEvent
     {
         Keyboard::Key code;
@@ -33,6 +39,7 @@ class Event {
 
     enum Type {
         Closed,
+        TextEntered,
         KeyPressed,
         KeyReleased,
         MouseButtonPressed,
@@ -49,6 +56,7 @@ class Event {
         MouseMoveEvent   mouse_move;
         MouseButtonEvent mouse_button;
         IdleEvent        idle;
+        TextEvent        text;
     };
 
     static Event::IdleEvent

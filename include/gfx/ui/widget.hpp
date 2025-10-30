@@ -20,6 +20,7 @@ class Widget : public core::Drawable, public core::Transformable {
 
     // clang-format off
     virtual bool onIdle   		( const Event& event );
+    virtual bool onTextEnter    ( const Event& event );
     virtual bool onKeyPress     ( const Event& event );
     virtual bool onKeyRelease   ( const Event& event );
     virtual bool onMousePress   ( const Event& event );

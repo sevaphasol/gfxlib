@@ -18,6 +18,7 @@ struct Event
 
 // clang-format off
 struct IdleEvent         : public Event { IdleEvent         (const core::Event& info) : Event(info) {} bool apply( Widget* widget ) const override final; };
+struct TextEnteredEvent  : public Event { TextEnteredEvent  (const core::Event& info) : Event(info) {} bool apply( Widget* widget ) const override final; };
 struct KeyPressEvent     : public Event { KeyPressEvent     (const core::Event& info) : Event(info) {} bool apply( Widget* widget ) const override final; };
 struct KeyReleaseEvent   : public Event { KeyReleaseEvent   (const core::Event& info) : Event(info) {} bool apply( Widget* widget ) const override final; };
 struct MousePressEvent   : public Event { MousePressEvent   (const core::Event& info) : Event(info) {} bool apply( Widget* widget ) const override final; };

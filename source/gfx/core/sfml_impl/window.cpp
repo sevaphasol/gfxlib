@@ -135,6 +135,10 @@ Window::pollEvent( Event& event )
             case sf::Event::Closed:
                 event.type = Event::Closed;
                 break;
+            case sf::Event::TextEntered:
+                event.type         = Event::TextEntered;
+                event.text.unicode = sf_event.text.unicode;
+                break;
             case sf::Event::KeyPressed:
                 event.type     = Event::KeyPressed;
                 event.key.code = detail::fromSFML( sf_event.key.code );

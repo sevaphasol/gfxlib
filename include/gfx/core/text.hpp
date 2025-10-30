@@ -47,7 +47,7 @@ class Text : public Drawable, public Transformable {
     void
     setOutlineThickness( float thickness );
 
-    const std::string&
+    std::string
     getString() const;
 
     const Font*

@@ -11,6 +11,12 @@ IdleEvent::apply( Widget* widget ) const
 }
 
 bool
+TextEnteredEvent::apply( Widget* widget ) const
+{
+    return widget->onTextEnter( *this );
+}
+
+bool
 KeyPressEvent::apply( Widget* widget ) const
 {
     return widget->onKeyPress( *this );

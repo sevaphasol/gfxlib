@@ -86,6 +86,12 @@ Text::setString( const std::string& string )
     impl_->text.setString( string );
 }
 
+std::string
+Text::getString() const
+{
+    return impl_->text.getString();
+}
+
 void
 Text::setFont( const Font& font )
 {

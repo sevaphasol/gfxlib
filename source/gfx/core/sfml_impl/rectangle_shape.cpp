@@ -33,7 +33,14 @@ RectangleShape::RectangleShape( const RectangleShape& other )
 }
 
 void
-RectangleShape::setSize( const Vector2f& size )
+RectangleShape::setSize( float w, float h )
+{
+    sf::Vector2f sf_vector( w, h );
+    impl_->rectangle_shape.setSize( sf_vector );
+}
+
+void
+RectangleShape::setSize( const core::Vector2f& size )
 {
     sf::Vector2f sf_vector( size.x, size.y );
     impl_->rectangle_shape.setSize( sf_vector );

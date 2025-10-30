@@ -75,51 +75,52 @@ Button::isPressed() const
 bool
 Button::onIdle( const Event& event )
 {
+    updateVisuals();
     return false;
 }
 
-bool
-Button::onMousePress( const Event& event )
-{
-    if ( is_hovered_ && event.info.mouse_button.button == gfx::core::Mouse::Left )
-    {
-        is_pressed_ = true;
-        updateVisuals();
-        return true;
-    }
-
-    return false;
-}
-
-bool
-Button::onMouseRelease( const Event& event )
-{
-    is_pressed_ = false;
-    updateVisuals();
-    return is_hovered_;
-}
-
-bool
-Button::onMouseMove( const Event& event )
-{
-    // // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
-
-    is_hovered_ =
-        pointInside( gfx::core::Vector2f( event.info.mouse_move.x, event.info.mouse_move.y ) );
-
-    // // // std::cerr << event.info.mouse_move.x << " " << event.info.mouse_move.y << std::endl;
-    // // // std::cerr << getPosition().x << " " << getPosition().y << std::endl;
-    // // // std::cerr << is_hovered_ << std::endl;
-
-    if ( !is_hovered_ )
-    {
-        is_pressed_ = false;
-    }
-
-    updateVisuals();
-
-    return is_hovered_;
-}
+// bool
+// Button::onMousePress( const Event& event )
+// {
+// if ( is_hovered_ && event.info.mouse_button.button == gfx::core::Mouse::Left )
+// {
+// is_pressed_ = true;
+// updateVisuals();
+// return true;
+// }
+//
+// return false;
+// }
+//
+// bool
+// Button::onMouseRelease( const Event& event )
+// {
+// is_pressed_ = false;
+// updateVisuals();
+// return is_hovered_;
+// }
+//
+// bool
+// Button::onMouseMove( const Event& event )
+// {
+// // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
+//
+// is_hovered_ =
+// pointInside( gfx::core::Vector2f( event.info.mouse_move.x, event.info.mouse_move.y ) );
+//
+// // // std::cerr << event.info.mouse_move.x << " " << event.info.mouse_move.y << std::endl;
+// // // std::cerr << getPosition().x << " " << getPosition().y << std::endl;
+// // // std::cerr << is_hovered_ << std::endl;
+//
+// if ( !is_hovered_ )
+// {
+// is_pressed_ = false;
+// }
+//
+// updateVisuals();
+//
+// return is_hovered_;
+// }
 
 void
 Button::updateVisuals()

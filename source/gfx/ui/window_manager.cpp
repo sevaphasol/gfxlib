@@ -56,6 +56,9 @@ WindowManager::handleEvents()
             case core::Event::Closed:
                 window_.close();
                 break;
+            case core::Event::TextEntered:
+                ui::TextEnteredEvent( core_event ).apply( &desktop_ );
+                break;
             case core::Event::KeyPressed:
                 ui::KeyPressEvent( core_event ).apply( &desktop_ );
                 break;

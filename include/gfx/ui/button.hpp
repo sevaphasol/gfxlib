@@ -39,12 +39,12 @@ class Button : public gfx::ui::Widget {
     onIdle( const Event& event ) override;
 
   private:
-    bool
-    onMousePress( const Event& event ) override;
-    bool
-    onMouseRelease( const Event& event ) override;
-    bool
-    onMouseMove( const Event& event ) override;
+    // bool
+    // onMousePress( const Event& event ) override;
+    // bool
+    // onMouseRelease( const Event& event ) override;
+    // bool
+    // onMouseMove( const Event& event ) override;
     void
     draw( gfx::core::Window& window, gfx::core::Transform transform ) const override;
     void

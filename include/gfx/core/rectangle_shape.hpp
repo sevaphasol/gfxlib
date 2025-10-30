@@ -18,6 +18,8 @@ class RectangleShape : public Drawable, public Transformable {
     RectangleShape( const RectangleShape& other );
 
     void
+    setSize( float w, float h );
+    void
     setSize( const Vector2f& size );
 
     Vector2f
