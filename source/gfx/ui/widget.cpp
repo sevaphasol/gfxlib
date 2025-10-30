@@ -38,6 +38,12 @@ Widget::onIdle( const Event& event )
 }
 
 bool
+Widget::isHovered() const
+{
+    return is_hovered_;
+}
+
+bool
 Widget::onKeyPress( const Event& event )
 {
     return false;
@@ -94,7 +100,6 @@ Widget::onMouseRelease( const Event& event )
 bool
 Widget::onMouseMove( const Event& event )
 {
-
     core::Vector2f mouse_pos( event.info.mouse_move.x, event.info.mouse_move.y );
     is_hovered_ = pointInside( mouse_pos );
 

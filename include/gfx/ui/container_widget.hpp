@@ -106,37 +106,37 @@ class VectorContainerWidget : public ContainerWidget {
     virtual bool
     onIdle( const Event& event ) override
     {
-        // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
+        // // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
         return propagateEventToChildren( event );
     }
     virtual bool
     onKeyPress( const Event& event ) override
     {
-        // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
+        // // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
         return propagateEventToChildren( event );
     }
     virtual bool
     onKeyRelease( const Event& event ) override
     {
-        // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
+        // // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
         return propagateEventToChildren( event );
     }
     virtual bool
     onMousePress( const Event& event ) override
     {
-        // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
+        // // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
         return propagateEventToChildren( event );
     }
     virtual bool
     onMouseRelease( const Event& event ) override
     {
-        // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
+        // // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
         return propagateEventToChildren( event );
     }
     virtual bool
     onMouseMove( const Event& event ) override
     {
-        // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
+        // // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
         return propagateEventToChildren( event );
     }
 

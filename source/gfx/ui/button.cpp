@@ -102,14 +102,14 @@ Button::onMouseRelease( const Event& event )
 bool
 Button::onMouseMove( const Event& event )
 {
-    // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
+    // // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
 
     is_hovered_ =
         pointInside( gfx::core::Vector2f( event.info.mouse_move.x, event.info.mouse_move.y ) );
 
-    // // std::cerr << event.info.mouse_move.x << " " << event.info.mouse_move.y << std::endl;
-    // // std::cerr << getPosition().x << " " << getPosition().y << std::endl;
-    // // std::cerr << is_hovered_ << std::endl;
+    // // // std::cerr << event.info.mouse_move.x << " " << event.info.mouse_move.y << std::endl;
+    // // // std::cerr << getPosition().x << " " << getPosition().y << std::endl;
+    // // // std::cerr << is_hovered_ << std::endl;
 
     if ( !is_hovered_ )
     {
