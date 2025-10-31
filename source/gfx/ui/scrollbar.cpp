@@ -121,8 +121,6 @@ Thumb::onIdle( const Event& event )
 bool
 Thumb::onMousePress( const Event& event )
 {
-    // // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
-
     if ( is_hovered_ && event.info.mouse_button.button == gfx::core::Mouse::Left )
     {
         is_pressed_  = true;
@@ -139,8 +137,6 @@ Thumb::onMousePress( const Event& event )
 bool
 Thumb::onMouseMove( const Event& event )
 {
-    // // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
-
     gfx::core::Vector2f mouse_pos( event.info.mouse_move.x, event.info.mouse_move.y );
     is_hovered_ = pointInside( mouse_pos );
 
@@ -161,8 +157,6 @@ Thumb::onMouseMove( const Event& event )
 bool
 Thumb::onMouseRelease( const Event& event )
 {
-    // // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
-
     return Widget::onMouseRelease( event );
 }
 
@@ -220,8 +214,6 @@ Arrow::setUpTriangle()
 bool
 Arrow::onMousePress( const Event& event )
 {
-    // // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
-
     if ( is_hovered_ && event.info.mouse_button.button == gfx::core::Mouse::Left )
     {
         is_pressed_ = true;
@@ -236,15 +228,8 @@ Arrow::onMousePress( const Event& event )
 bool
 Arrow::onMouseMove( const Event& event )
 {
-    // // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
-
-    // // // std::cerr << event.info.mouse_move.x << " " << event.info.mouse_move.y << std::endl;
-    // // // std::cerr << getPosition().x << " " << getPosition().y << std::endl;
-
     core::Vector2f mouse_pos( event.info.mouse_move.x, event.info.mouse_move.y );
     is_hovered_ = pointInside( mouse_pos );
-
-    // // // std::cerr << is_hovered_ << std::endl;
 
     if ( !is_hovered_ )
     {
@@ -265,8 +250,6 @@ Arrow::onMouseMove( const Event& event )
 bool
 Arrow::onMouseRelease( const Event& event )
 {
-    // // // std::cerr << __PRETTY_FUNCTION__ << std::endl;
-
     return Widget::onMouseRelease( event );
 }
 

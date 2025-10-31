@@ -30,10 +30,6 @@ class Cursor : public Widget {
     void
     move( float x )
     {
-        // std::cerr << __PRETTY_FUNCTION__ << std::endl;
-
-        // std::cerr << getSize().x << " " << getSize().y << std::endl;
-
         setPosition( getPosition().x + x, getPosition().y );
     }
 
@@ -54,10 +50,6 @@ class Cursor : public Widget {
     draw( core::Window& window, core::Transform transform ) const override final
     {
         transform = transform.combine( getTransform() );
-
-        // std::cerr << __PRETTY_FUNCTION__ << std::endl;
-
-        // std::cerr << rect_.getSize().x << " " << rect_.getSize().y << std::endl;
 
         window.draw( rect_, transform );
     }
@@ -115,8 +107,6 @@ class TextField : public ContainerWidget {
     {
         is_focused_ = Widget::onMousePress( event );
 
-        // std::cerr << is_focused_ << std::endl;
-
         return is_focused_;
     }
 
@@ -144,10 +134,7 @@ class TextField : public ContainerWidget {
     bool
     onMouseMove( const Event& event ) override
     {
-        // std::cerr << std::endl << __PRETTY_FUNCTION__ << std::endl;
-
         // Widget::onMouseMove( event );
-        // std::cerr << is_hovered_ << std::endl;
 
         core::Vector2f mouse_pos( event.info.mouse_move.x, event.info.mouse_move.y );
         // is_hovered_ = pointInside( mouse_pos );
@@ -155,20 +142,11 @@ class TextField : public ContainerWidget {
         core::Vector2f rel_pos        = getRelPos();
         core::Vector2f parent_abs_pos = getParentAbsPos();
 
-        // std::cerr << "rel_pos: " << rel_pos.x << " " << rel_pos.y << std::endl;
-        // std::cerr << "parent_abs_pos: " << parent_abs_pos.x << " " << parent_abs_pos.y <<
-        // std::endl;
-
         core::Vector2f abs_pos = parent_abs_pos + rel_pos;
         core::Vector2f sz      = getSize();
 
-        // std::cerr << "abs_pos: " << abs_pos.x << " " << abs_pos.y << std::endl;
-        // std::cerr << "sz: " << sz.x << " " << sz.y << std::endl;
-
         is_hovered_ = ( ( mouse_pos.x >= abs_pos.x && mouse_pos.x <= abs_pos.x + sz.x ) &&
                         ( mouse_pos.y >= abs_pos.y && mouse_pos.y <= abs_pos.y + sz.y ) );
-
-        // std::cerr << mouse_pos.x << " " << mouse_pos.y << std::endl;
 
         if ( !is_hovered_ )
         {
@@ -180,8 +158,6 @@ class TextField : public ContainerWidget {
             setRelPos( mouse_pos - drag_offset_ - getParentAbsPos() );
             return true;
         }
-
-        // std::cerr << is_hovered_ << std::endl;
 
         return is_hovered_;
     }
@@ -257,8 +233,6 @@ class TextField : public ContainerWidget {
     void
     draw( core::Window& window, core::Transform transform ) const override final
     {
-        // std::cerr << __PRETTY_FUNCTION__ << std::endl;
-
         transform = transform.combine( getTransform() );
 
         window.draw( label_, transform );
