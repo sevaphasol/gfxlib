@@ -34,6 +34,10 @@ class Button : public gfx::ui::Widget {
     setBackgroundColor( const gfx::core::Color& color );
     bool
     isPressed() const;
+    bool
+    isPressedJustNow() const;
+    bool
+    onMousePress( const Event& event ) override;
 
     bool
     onIdle( const Event& event ) override;
@@ -49,6 +53,8 @@ class Button : public gfx::ui::Widget {
     draw( gfx::core::Window& window, gfx::core::Transform transform ) const override;
     void
     updateVisuals();
+
+    bool is_pressed_just_now_ = false;
 
     gfx::core::RectangleShape background_;
     gfx::core::Font           font_;

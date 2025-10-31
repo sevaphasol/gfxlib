@@ -24,7 +24,7 @@ class Text : public Drawable, public Transformable {
 
     Text();
 
-    Text( const std::string& string, const Font& font, unsigned int character_size );
+    Text( const std::string& string, unsigned int character_size );
 
     void
     setString( const std::string& string );

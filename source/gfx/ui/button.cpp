@@ -22,12 +22,14 @@ Button::Button( const gfx::core::Vector2f& pos,
                 size_t                     font_size )
     : Widget( pos, size ),
       background_( size ),
-      label_( title, font, font_size ),
       default_color_( default_color ),
       hovered_color_( hovered_color ),
       pressed_color_( pressed_color )
 {
     background_.setFillColor( default_color );
+    label_.setFont( font );
+    label_.setString( title );
+    label_.setCharacterSize( font_size );
     label_.setFillColor( font_color );
     label_.moveInCenterOfRect( size );
 }
@@ -73,24 +75,32 @@ Button::isPressed() const
 }
 
 bool
+Button::isPressedJustNow() const
+{
+    return is_pressed_just_now_;
+}
+
+bool
 Button::onIdle( const Event& event )
 {
+    is_pressed_just_now_ = false;
+
     updateVisuals();
     return false;
 }
 
-// bool
-// Button::onMousePress( const Event& event )
-// {
-// if ( is_hovered_ && event.info.mouse_button.button == gfx::core::Mouse::Left )
-// {
-// is_pressed_ = true;
-// updateVisuals();
-// return true;
-// }
-//
-// return false;
-// }
+bool
+Button::onMousePress( const Event& event )
+{
+    if ( Widget::onMousePress( event ) )
+    {
+        is_pressed_just_now_ = true;
+        return true;
+    }
+
+    return false;
+}
+
 //
 // bool
 // Button::onMouseRelease( const Event& event )

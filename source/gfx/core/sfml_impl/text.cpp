@@ -64,21 +64,11 @@ class Text::Impl {
     sf::Text text;
 
     Impl() = default;
-
-    Impl( const std::string& string, const Font& font, unsigned int character_size )
-        : text( string, *static_cast<const sf::Font*>( font.getImpl() ), character_size )
-    {
-    }
 };
 
 Text::~Text() = default;
 
 Text::Text() : impl_( std::make_unique<Impl>() ) {}
-
-Text::Text( const std::string& string, const Font& font, unsigned int character_size )
-    : impl_( std::make_unique<Impl>( string, font, character_size ) )
-{
-}
 
 void
 Text::setString( const std::string& string )

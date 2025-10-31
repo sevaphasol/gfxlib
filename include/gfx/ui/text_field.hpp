@@ -88,7 +88,7 @@ class TextField : public ContainerWidget {
         text_.setPosition( 1.8 * label_.getLocalBounds().w, h * 0.1f );
 
         border_.setFillColor( core::Color::Transparent );
-        border_.setOutlineColor( core::Color::White );
+        border_.setOutlineColor( { 118, 185, 0 } );
         border_.setOutlineThickness( 1.0f );
         border_.setSize( w - 1.05 * label_.getLocalBounds().w, h );
         border_.setPosition( 1.75 * label_.getLocalBounds().w, 0 );
@@ -118,6 +118,27 @@ class TextField : public ContainerWidget {
         // std::cerr << is_focused_ << std::endl;
 
         return is_focused_;
+    }
+
+    bool
+    onIdle( const Event& event ) override
+    {
+        ++govnokod_;
+
+        if ( govnokod_ % 15 != 0 )
+        {
+            return false;
+        }
+
+        if ( govnokod_ % 10 < 5 )
+        {
+            cursor_.setColor( core::Color::Transparent );
+        } else
+        {
+            cursor_.setColor( core::Color::White );
+        }
+
+        return false;
     }
 
     bool
@@ -242,12 +263,18 @@ class TextField : public ContainerWidget {
 
         window.draw( label_, transform );
         window.draw( text_, transform );
-        window.draw( cursor_, transform );
         window.draw( border_, transform );
+
+        if ( is_focused_ )
+        {
+            window.draw( cursor_, transform );
+        }
     }
 
   private:
     bool is_focused_;
+
+    int govnokod_ = 0;
 
     core::Text label_;
 
